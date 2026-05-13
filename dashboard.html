@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任務星圖 | 時空探險局</title>
+    
+    <!-- 強制載入 Noto Sans HK，保護視覺專注 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           無障礙核心設計 (CSS) 
+           ========================================= */
+        :root {
+            --bg-color: #F0F4F8;
+            --text-color: #2C3E50;
+            --primary-blue: #3498DB;
+            --card-bg: #FFFFFF;
+            --lvl1-color: #117A65;
+            --lvl1-bg: #E8F8F5;
+            --lvl2-color: #B9770E;
+            --lvl2-bg: #FEF9E7;
+            --lvl3-color: #C0392B;
+            --lvl3-bg: #FDEDEC;
+        }
+
+        body {
+            font-family: 'Noto Sans HK', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        /* 1. 頂部狀態列 (Top Bar) - 遊戲化資訊 */
+        .top-bar {
+            width: 100%;
+            background: linear-gradient(135deg, #2C3E50, #34495E);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .avatar { font-size: 2.5em; background: rgba(255,255,255,0.1); border-radius: 50%; padding: 5px; }
+
+        .user-info { display: flex; flex-direction: column; }
+        .user-name { font-size: 1.2em; font-weight: bold; color: #ECF0F1; }
+        .level-badge {
+            background-color: #F1C40F;
+            color: #2C3E50;
+            padding: 2px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 4px;
+        }
+
+        .exp-container { margin-top: 8px; font-size: 0.85em; }
+        .exp-bar-bg {
+            width: 180px;
+            height: 10px;
+            background-color: rgba(255,255,255,0.2);
+            border-radius: 5px;
+            margin-top: 4px;
+            overflow: hidden;
+        }
+        .exp-fill {
+            width: 0%; /* 動態計算 */
+            height: 100%;
+            background: linear-gradient(90deg, #2ECC71, #27AE60);
+            transition: width 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* 2. 標題區 */
+        .header-section { text-align: center; margin: 40px 0 20px 0; padding: 0 20px; }
+        .header-section h1 { font-size: 2.4em; color: #2C3E50; margin-bottom: 10px; }
+        .header-section p { color: #7F8C8D; font-size: 1.1em; }
+
+        /* 3. 任務星圖網格 */
+        .mission-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            margin-bottom: 60px;
+        }
+
+        .mission-card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            border-top: 8px solid var(--primary-blue);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mission-card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+
+        .card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
+        .card-number { background: #34495E; color: white; border-radius: 10px; padding: 4px 12px; font-weight: bold; font-size: 1.1em; }
+        .card-title { font-size: 1.4em; font-weight: 700; color: #2C3E50; }
+        .card-desc { font-size: 0.95em; color: #7F8C8D; margin-bottom: 20px; line-height: 1.6; min-height: 50px; }
+
+        /* 4. 擴大後的難度按鈕 (整條點擊) */
+        .level-options { display: flex; flex-direction: column; gap: 15px; }
+
+        .level-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 15px 20px;
+            border: 2.5px solid transparent;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            box-sizing: border-box;
+        }
+
+        /* UDL: 明顯的 Hover 與 Focus 狀態 */
+        .level-row:hover { transform: scale(1.02); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .level-row:active { transform: scale(0.98); }
+
+        .level-row.lv1 { background-color: var(--lvl1-bg); color: var(--lvl1-color); }
+        .level-row.lv1:hover { border-color: #1ABC9C; }
+
+        .level-row.lv2 { background-color: var(--lvl2-bg); color: var(--lvl2-color); }
+        .level-row.lv2:hover { border-color: #F1C40F; }
+
+        .level-row.lv3 { background-color: var(--lvl3-bg); color: var(--lvl3-color); }
+        .level-row.lv3:hover { border-color: #E74C3C; }
+
+        .level-text { font-size: 1.1em; font-weight: bold; display: flex; flex-direction: column; }
+        .level-tag { font-size: 0.75em; text-transform: uppercase; opacity: 0.8; margin-bottom: 2px; }
+
+        .status-indicator {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 3px solid #BDC3C7;
+            background-color: white;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .level-row:hover .status-indicator { border-color: currentColor; }
+
+        /* 載入動畫 */
+        #loading-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #3498DB;
+            z-index: 2000;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 頂部指揮官資訊列 -->
+    <div class="top-bar">
+        <div class="user-profile">
+            <div class="avatar">🧑‍🚀</div>
+            <div class="user-info">
+                <div class="user-name" id="display-name">連線中...</div>
+                <div class="level-badge" id="display-lv">Lv. 1 星際新兵</div>
+                <div class="exp-container">
+                    能量值 (EXP): <span id="exp-text">0 / 100</span>
+                    <div class="exp-bar-bg"><div class="exp-fill" id="exp-fill"></div></div>
+                </div>
+            </div>
+        </div>
+        <div class="achievements" id="display-solved">
+            🚀 已修復數據: 0 題
+        </div>
+    </div>
+
+    <!-- 頁面標題 -->
+    <div class="header-section">
+        <h1>🌌 任務星圖：文字星系</h1>
+        <p>請指揮官選擇要探索的領域與難度。每次成功挑戰將獲得 10 點能量！</p>
+    </div>
+
+    <!-- 任務星圖網格 (以 4 個為例，結構相同) -->
+    <div class="mission-grid">
+        
+        <!-- 板塊 1: 字詞 -->
+        <div class="mission-card" style="border-color: #3498DB;">
+            <div class="card-header">
+                <span class="card-number">1</span>
+                <span class="card-title">字詞基礎星系</span>
+            </div>
+            <div class="card-desc">涵蓋部首部件、形近字辨析及常用成語。</div>
+            <div class="level-options">
+                <div class="level-row lv1" onclick="launchMission(1, 1)">
+                    <div class="level-text">
+                        <span class="level-tag">Level 1</span>
+                        <span>🌱 木級 (補底 / 基礎)</span>
+                    </div>
+                    <div class="status-indicator"></div>
+                </div>
+                <div class="level-row lv2" onclick="launchMission(1, 2)">
+                    <div class="level-text">
+                        <span class="level-tag">Level 2</span>
+                        <span>⭐ 銀級 (標準 / 應用)</span>
+                    </div>
+                    <div class="status-indicator"></div>
+                </div>
+                <div class="level-row lv3" onclick="launchMission(1, 3)">
+                    <div class="level-text">
+                        <span class="level-tag">Level 3</span>
+                        <span>🚀 鑽石級 (拔尖 / 進階)</span>
+                    </div>
+                    <div class="status-indicator"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 板塊 2: 句子 -->
+        <div class="mission-card" style="border-color: #9B59B6;">
+            <div class="card-header">
+                <span class="card-number">2</span>
+                <span class="card-title">句子語法軌道</span>
+            </div>
+            <div class="card-desc">重組句子、把被字句轉換及病句診斷。</div>
+            <div class="level-options">
+                <div class="level-row lv1" onclick="launchMission(2, 1)">
+                    <div class="level-text"><span class="level-tag">Level 1</span><span>🌱 木級 (補底 / 基礎)</span></div>
+                    <div class="status-indicator"></div>
+                </div>
+                <div class="level-row lv2" onclick="launchMission(2, 2)">
+                    <div class="level-text"><span class="level-tag">Level 2</span><span>⭐ 銀級 (標準 / 應用)</span></div>
+                    <div class="status-indicator"></div>
+                </div>
+                <div class="level-row lv3" onclick="launchMission(2, 3)">
+                    <div class="level-text"><span class="level-tag">Level 3</span><span>🚀 鑽石級 (拔尖 / 進階)</span></div>
+                    <div class="status-indicator"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 板塊 3: 修辭 -->
+        <div class="mission-card" style="border-color: #E67E22;">
+            <div class="card-header">
+                <span class="card-number">3</span>
+                <span class="card-title">修辭標點隕石帶</span>
+            </div>
+            <div class="card-desc">比喻、擬人辨析及標點符號的精準應用。</div>
+            <div class="level-options">
+                <div class="level-row lv1" onclick="launchMission(3, 1)">
+                    <div class="level-text"><span class="level-tag">Level 1</span><span>🌱 木級 (補底 / 基礎)</span></div>
+                    <div class="status-indicator"></div>
+                </div>
+                <div class="level-row lv2" onclick="launchMission(3, 2)">
+                    <div class="level-text"><span class="level-tag">Level 2</span><span>⭐ 銀級 (標準 / 應用)</span></div>
+                    <div class="status-indicator"></div>
+                </div>
+                <div class="level-row lv3" onclick="launchMission(3, 3)">
+                    <div class="level-text"><span class="level-tag">Level 3</span><span>🚀 鑽石級 (拔尖 / 進階)</span></div>
+                    <div class="status-indicator"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 板塊 4: 閱讀 -->
+        <div class="mission-card" style="border-color: #1ABC9C;">
+            <div class="card-header">
+                <span class="card-number">4</span>
+                <span class="card-title">洞察黑洞 (閱讀)</span>
+            </div>
+            <div class="card-desc">資訊提取、段落主旨推論與深層評價。</div>
+            <div class="level-options">
+                <div class="level-row lv1" onclick="launchMission(4, 1)">
+                    <div class="level-text"><span class="level-tag">Level 1</span><span>🌱 木級 (補底 / 基礎)</span></div>
+                    <div class="status-indicator"></div>
+                </div>
+                <div class="level-row lv2" onclick="launchMission(4, 2)">
+                    <div class="level-text"><span class="level-tag">Level 2</span><span>⭐ 銀級 (標準 / 應用)</span></div>
+                    <div class="status-indicator"></div>
+                </div>
+                <div class="level-row lv3" onclick="launchMission(4, 3)">
+                    <div class="level-text"><span class="level-tag">Level 3</span><span>🚀 鑽石級 (拔尖 / 進階)</span></div>
+                    <div class="status-indicator"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 躍遷動畫 -->
+    <div id="loading-overlay">
+        <div style="font-size: 3em; margin-bottom: 20px;">🚀</div>
+        <div>正在設定導航坐標，準備躍遷...</div>
+    </div>
+
+    <!-- =========================================
+         系統邏輯 (JavaScript) 
+         ========================================= -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAvE67iAYoA9Z5zElGqTT0kpXEhuVzsa_I",
+            authDomain: "chinesequest-primary.firebaseapp.com",
+            projectId: "chinesequest-primary",
+            storageBucket: "chinesequest-primary.firebasestorage.app",
+            messagingSenderId: "442065508277",
+            appId: "1:442065508277:web:299279646ef236fa27abfc"
+        };
+
+        const sysAppId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        let currentUserData = { name: "星際訪客", solvedCount: 0 };
+
+        try {
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+            const db = getFirestore(app);
+
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    // 1. 讀取使用者基本資料
+                    const userDocRef = doc(db, 'artifacts', sysAppId, 'users', user.uid, 'profile', 'info');
+                    const docSnap = await getDoc(userDocRef);
+                    if (docSnap.exists()) {
+                        currentUserData.name = docSnap.data().name;
+                        currentUserData.class = docSnap.data().class;
+                        document.getElementById('display-name').innerText = `${currentUserData.name} (${currentUserData.class})`;
+                    }
+
+                    // 2. 實時監聽答題數據以計算 EXP 與等級
+                    // 假設答題紀錄存在 public 資料夾下的 stats
+                    const statsRef = doc(db, 'artifacts', sysAppId, 'users', user.uid, 'gameData', 'stats');
+                    onSnapshot(statsRef, (doc) => {
+                        let solved = 0;
+                        if (doc.exists()) {
+                            solved = doc.data().totalCorrect || 0;
+                        }
+                        updateProgress(solved);
+                    }, (err) => {
+                        console.log("使用初始數據進行預覽");
+                        updateProgress(0); 
+                    });
+
+                } else {
+                    signInAnonymously(auth).catch(() => {
+                        document.getElementById('display-name').innerText = "本地預覽模式";
+                        updateProgress(5); // 預覽用
+                    });
+                }
+            });
+        } catch (e) {
+            updateProgress(2);
+        }
+
+        /**
+         * 核心邏輯：等級與 EXP 計算
+         * 1 題 = 10 EXP
+         * 每 100 EXP 升一級 (即每 10 題升一級)
+         */
+        function updateProgress(solvedCount) {
+            const expPerTask = 10;
+            const expToLevel = 100;
+            
+            const totalExp = solvedCount * expPerTask;
+            const currentLevel = Math.floor(totalExp / expToLevel) + 1;
+            const currentLevelExp = totalExp % expToLevel;
+            const progressPercent = (currentLevelExp / expToLevel) * 100;
+
+            // 更新介面
+            document.getElementById('display-solved').innerText = `🚀 已修復數據: ${solvedCount} 題`;
+            document.getElementById('display-lv').innerText = `Lv. ${currentLevel} ${getLevelTitle(currentLevel)}`;
+            document.getElementById('exp-text').innerText = `${currentLevelExp} / ${expToLevel}`;
+            document.getElementById('exp-fill').style.width = `${progressPercent}%`;
+        }
+
+        function getLevelTitle(lv) {
+            if (lv < 5) return "星際新兵";
+            if (lv < 10) return "時空護衛";
+            if (lv < 20) return "星系先驅";
+            return "傳奇指揮官";
+        }
+
+        window.launchMission = function(domain, level) {
+            // 播放確認音效
+            playConfirmedSound();
+            document.getElementById('loading-overlay').style.display = 'flex';
+            setTimeout(() => {
+                window.location.href = `game.html?domain=${domain}&level=${level}`;
+            }, 800);
+        };
+
+        function playConfirmedSound() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(1320, ctx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.3);
+            } catch (e) {}
+        }
+
+    </script>
+</body>
+</html>

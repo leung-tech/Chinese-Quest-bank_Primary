@@ -300,10 +300,7 @@
                 // 【預留位置：未來可以在這裡加入專屬的短促確認音效】
                 // if (typeof window.playConfirmedSound === 'function') { window.playConfirmedSound(); }
 
-                setTimeout(() => {
-                    window.location.href = 'dashboard.html';
-                }, 2500);
-
+                setTimeout(() => {```javascript window.location.href = 'dashboard.html';}, 2500);
             } catch (error) {
                 console.error("登入錯誤:", error);
                 msgBox.style.backgroundColor = '#FDEDEC';

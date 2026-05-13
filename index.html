@@ -292,7 +292,9 @@
                     name: studentName,
                     class: studentClass,
                     classNumber: classNumber,
-                    joinedAt: new Date().toISOString()
+                    joinedAt: new Date().toISOString(),
+                    totalCorrect: 0,
+                    totalExp: 0
                 });
 
                 msgBox.innerHTML = `✅ 身份確認！歡迎 ${studentName} 隊員。<br>正在開啟時空蟲洞，準備跳轉至文字星系...`;
@@ -300,7 +302,9 @@
                 // 【預留位置：未來可以在這裡加入專屬的短促確認音效】
                 // if (typeof window.playConfirmedSound === 'function') { window.playConfirmedSound(); }
 
-                setTimeout(() => {```javascript window.location.href = 'dashboard.html';}, 2500);
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 2500);
             } catch (error) {
                 console.error("登入錯誤:", error);
                 msgBox.style.backgroundColor = '#FDEDEC';

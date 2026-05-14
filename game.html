@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星際戰場 | 時空探險局</title>
+    
+    <!-- 強制載入 Noto Sans HK，保護 SpLD 學生視覺 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- 【黑科技接入】引入 Hanzi Writer 漢字書寫引擎 -->
+    <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
+    
+    <style>
+        /* =========================================
+           無障礙核心設計 (CSS) 
+           ========================================= */
+        :root {
+            --bg-color: #FFF8E7;
+            --text-color: #2C3E50;
+            --btn-primary: #3498DB;
+            --btn-hover: #2980B9;
+            --btn-option: #ECF0F1;
+            --btn-option-hover: #D5DBDB;
+            --success-color: #2ECC71;
+        }
+
+        body {
+            font-family: 'Noto Sans HK', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.8;
+            letter-spacing: 1.5px;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .status-bar {
+            width: 100%; max-width: 900px; display: flex; justify-content: space-between;
+            align-items: center; background: linear-gradient(135deg, #8E44AD, #9B59B6);
+            color: white; padding: 15px 25px; border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 20px; box-sizing: border-box;
+        }
+
+        .explorer-info { font-size: 1.2em; font-weight: bold; display: flex; align-items: center; gap: 10px; }
+        .back-btn-top {
+            background: rgba(255,255,255,0.2); color: white; border: none; padding: 5px 15px;
+            border-radius: 8px; cursor: pointer; font-weight: bold; transition: background 0.2s;
+        }
+        .back-btn-top:hover { background: rgba(255,255,255,0.3); }
+
+        .udl-toolbar { display: flex; gap: 10px; }
+        .udl-btn {
+            background-color: #F2F4F4; color: #34495E; padding: 8px 15px;
+            font-size: 0.9em; border-radius: 15px; border: none; cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-weight: bold;
+        }
+
+        .container-box {
+            max-width: 900px; width: 100%; background: white; padding: 40px;
+            border-radius: 20px; border: 3px solid #E3F2FD;
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.15); box-sizing: border-box; position: relative;
+        }
+
+        /* 視角 1：任務節點矩陣 (Grid View) */
+        #grid-view { display: block; }
+        .matrix-header { text-align: left; margin-bottom: 25px; border-bottom: 2px solid #ECF0F1; padding-bottom: 15px; }
+        .matrix-title { font-size: 1.8em; color: #2C3E50; font-weight: bold; margin: 0 0 10px 0; }
+        
+        .legend-box {
+            background-color: #FDFEFE; border: 1px solid #E5E8E8; padding: 10px 20px;
+            border-radius: 10px; display: inline-flex; gap: 20px; font-size: 0.95em; align-items: center;
+        }
+        .legend-item { display: flex; align-items: center; gap: 8px; font-weight: bold; color: #5D6D7E; }
+        .icon-solved { color: var(--success-color); font-size: 1.2em; }
+        .icon-unsolved { color: #BDC3C7; font-size: 1.2em; }
+
+        .topic-group { margin-bottom: 35px; text-align: left; }
+        .topic-title {
+            font-size: 1.2em; color: #34495E; background-color: #EBF5FB;
+            display: inline-block; padding: 5px 15px; border-radius: 8px; margin-bottom: 15px; font-weight: bold;
+        }
+        .node-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 12px; }
+        .node-btn {
+            background-color: white; border: 2px solid #BDC3C7; color: #2C3E50;
+            height: 50px; border-radius: 12px; font-size: 1.2em; font-weight: bold;
+            cursor: pointer; transition: all 0.2s; display: flex; justify-content: center; align-items: center;
+        }
+        .node-btn:hover { border-color: var(--btn-primary); background-color: #EBF5FB; transform: translateY(-2px); }
+        .node-btn.solved { background-color: #EAFAF1; border-color: var(--success-color); color: var(--success-color); }
+
+        /* 視角 2：題目答題區 (Question View) */
+        #question-view { display: none; text-align: center; }
+        
+        /* 【新增】：問題區頂部橫列佈局 */
+        .question-header-row {
+            display: flex; justify-content: space-between; align-items: center; 
+            margin-bottom: 20px; border-bottom: 2px solid #ECF0F1; padding-bottom: 15px;
+        }
+
+        .domain-badge {
+            display: inline-block; background-color: #117A65; color: white;
+            padding: 5px 15px; border-radius: 20px; font-size: 1em; font-weight: bold;
+            margin-bottom: 0; /* 覆蓋舊的 margin */
+        }
+        
+        /* 【修改】：取消絕對定位，改為 flex 排版 */
+        .progress-text { font-size: 1.1em; font-weight: bold; color: #7F8C8D; }
+        
+        .question-text { font-size: 1.8em; margin-bottom: 20px; color: #2C3E50; line-height: 1.6; }
+        .highlight-word { color: #2980B9; font-weight: 900; background-color: #EBF5FB; padding: 0 5px; border-radius: 5px; }
+
+        .hint-btn {
+            background-color: #FEF9E7; color: #D4AC0D; border: 2px dashed #F1C40F;
+            padding: 8px 20px; border-radius: 20px; font-size: 1em; font-weight: bold; cursor: pointer; margin-bottom: 20px;
+        }
+        .hint-btn:hover { background-color: #FCF3CF; }
+        .hint-box {
+            display: none; background-color: #FCF3CF; color: #9C640C; padding: 15px;
+            border-radius: 10px; margin-bottom: 25px; font-size: 1.1em; text-align: left;
+        }
+
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
+        .option-btn {
+            font-family: 'Noto Sans HK', sans-serif; background-color: var(--btn-option);
+            color: #2C3E50; border: 3px solid transparent; padding: 20px; font-size: 1.3em;
+            border-radius: 15px; cursor: pointer; transition: all 0.2s; font-weight: bold;
+        }
+        .option-btn:hover { background-color: var(--btn-option-hover); transform: translateY(-2px); }
+        .option-btn.correct { background-color: #D5F5E3; border-color: #2ECC71; color: #27AE60; }
+        .option-btn.wrong { background-color: #FDEDEC; border-color: #E74C3C; color: #C0392B; }
+        .option-btn:disabled { cursor: not-allowed; transform: none; }
+
+        .handwriting-area { display: none; flex-direction: column; align-items: center; margin-bottom: 30px; }
+        .canvas-container {
+            width: 250px; height: 250px; border: 4px dashed #BDC3C7; border-radius: 15px;
+            background-color: #FDFEFE; display: flex; justify-content: center; align-items: center;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05); margin-bottom: 15px; position: relative;
+        }
+        .canvas-tools { display: flex; gap: 15px; }
+
+        .feedback-area {
+            display: none; margin-top: 20px; padding: 20px; border-radius: 15px;
+            font-size: 1.2em; font-weight: bold; animation: fadeIn 0.5s ease forwards; text-align: left;
+        }
+        .nav-buttons { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
+        .next-btn {
+            background-color: var(--btn-primary); color: white; border: none;
+            padding: 15px 40px; font-size: 1.2em; border-radius: 30px;
+            cursor: pointer; font-weight: bold; display: none; box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+        }
+        .next-btn:hover { background-color: var(--btn-hover); transform: translateY(-2px); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 600px) { .options-grid { grid-template-columns: 1fr; } }
+        
+        #completion-screen { display: none; text-align: center; }
+        #completion-screen h2 { font-size: 2.5em; color: #2C3E50; }
+        #completion-screen p { font-size: 1.5em; color: #27AE60; margin-bottom: 30px; }
+    </style>
+</head>
+<body>
+
+    <div class="status-bar">
+        <div class="explorer-info">
+            <button class="back-btn-top" onclick="goToDashboard()">⬅ 返回星圖</button>
+            <span id="player-greeting">📡 讀取資料中...</span>
+        </div>
+        <div class="udl-toolbar">
+            <button class="udl-btn" onclick="changeTheme('beige')">👁️ 黃底</button>
+            <button class="udl-btn" onclick="changeTheme('pink')">👁️ 粉底</button>
+            <span class="udl-btn" id="top-exp-display" style="background-color:#F1C40F; color:#873600;">EXP: 0</span>
+        </div>
+    </div>
+
+    <!-- 視角 1：任務節點矩陣 (Grid View) -->
+    <div class="container-box" id="grid-view">
+        <div class="matrix-header">
+            <h2 class="matrix-title" id="matrix-title">🚀 載入中...</h2>
+            <div class="legend-box">
+                <div class="legend-item">💡 標記說明：</div>
+                <div class="legend-item"><span class="icon-solved">☑</span> 已修復 (+10 EXP)</div>
+                <div class="legend-item"><span class="icon-unsolved">☐</span> 未修復</div>
+            </div>
+        </div>
+        <div id="matrix-content"></div>
+    </div>
+
+
+    <!-- 視角 2：核心答題區 (Question View) -->
+    <div class="container-box" id="question-view">
+        <!-- 【優化】：將徽章、進度、返回目錄按鈕整合在頂部橫列 -->
+        <div class="question-header-row">
+            <div class="domain-badge" id="q-topic-badge">載入中...</div>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <span class="progress-text" id="q-progress">Node #0</span>
+                <!-- 【新增】：隨時返回目錄的按鈕 -->
+                <button class="udl-btn" onclick="showGridView()" style="background-color: #BDC3C7; color: white; margin: 0; box-shadow: none;">🔙 返回目錄</button>
+            </div>
+        </div>
+        
+        <div style="text-align: right; margin-bottom: 10px;">
+            <button class="udl-btn" onclick="readQuestion()">🔊 語音朗讀</button>
+        </div>
+
+        <div class="question-text" id="q-text">準備載入數據...</div>
+        <button class="hint-btn" id="hint-btn" onclick="showHint()">💡 需要提示嗎？</button>
+        <div class="hint-box" id="hint-box"></div>
+
+        <div class="options-grid" id="options-area"></div>
+
+        <div class="handwriting-area" id="handwriting-area">
+            <div class="canvas-container" id="character-target"></div>
+            <div class="canvas-tools">
+                <button class="udl-btn" onclick="resetCanvas()">🔄 重新書寫</button>
+                <button class="udl-btn" onclick="demoStroke()">▶️ 觀看筆順示範</button>
+            </div>
+        </div>
+
+        <div class="feedback-area" id="feedback-box"></div>
+        
+        <div class="nav-buttons">
+            <button class="next-btn" id="back-grid-btn" onclick="showGridView()" style="background-color:#95A5A6; display:none;">返回列表</button>
+            <button class="next-btn" id="next-btn" onclick="nextQuestion()">下一節點 🚀</button>
+        </div>
+    </div>
+
+    <!-- 任務完成畫面 -->
+    <div class="container-box" id="completion-screen">
+        <h2>🎉 任務板塊圓滿完成！</h2>
+        <p id="exp-reward">獲得了 0 點能量！</p>
+        <button class="next-btn" style="display:inline-block;" onclick="goToDashboard()">返回任務星圖</button>
+    </div>
+
+    <!-- =========================================
+         系統邏輯與題庫載入
+         ========================================= -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, increment, arrayUnion, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAvE67iAYoA9Z5zElGqTT0kpXEhuVzsa_I",
+            authDomain: "chinesequest-primary.firebaseapp.com",
+            projectId: "chinesequest-primary",
+            storageBucket: "chinesequest-primary.firebasestorage.app",
+            messagingSenderId: "442065508277",
+            appId: "1:442065508277:web:299279646ef236fa27abfc"
+        };
+
+        const sysAppId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        let currentUserUid = null;
+        let db;
+        let userSolvedQuestions = []; 
+        let hwInstance = null; 
+
+        try {
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+            db = getFirestore(app);
+            
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    currentUserUid = user.uid;
+                    try {
+                        const docSnap = await getDoc(doc(db, 'artifacts', sysAppId, 'users', user.uid, 'profile', 'info'));
+                        document.getElementById('player-greeting').innerHTML = `🧑‍🚀 ${docSnap.exists() ? docSnap.data().name : '星際新兵'}`;
+                    } catch(e) {}
+                    
+                    onSnapshot(doc(db, 'artifacts', sysAppId, 'users', user.uid, 'gameData', 'stats'), (statsSnap) => {
+                        if (statsSnap.exists()) {
+                            userSolvedQuestions = statsSnap.data().solvedList || [];
+                            document.getElementById('top-exp-display').innerText = `EXP: ${(statsSnap.data().totalCorrect || 0) * 10}`;
+                        }
+                        if (document.getElementById('grid-view').style.display !== 'none') renderMatrixGrid();
+                    });
+                    initGameData();
+                } else {
+                    signInAnonymously(auth).catch(() => { initGameData(); });
+                }
+            });
+        } catch (error) { initGameData(); }
+
+        /* =========================================
+           🧠 終極題庫結構範本 (Blueprint Database)
+           ========================================= */
+        const urlParams = new URLSearchParams(window.location.search);
+        const domainId = parseInt(urlParams.get('domain')) || 1;
+        const levelId = parseInt(urlParams.get('level')) || 1;
+
+        const questionDatabase = {
+            // ================== 第 1 範疇：字、詞、成語 ==================
+            "domain_1": {
+                // ⬇️ Level 1: 補底 (基礎建立) 
+                "level_1": [
+                    { id: "q1_1_01", topic: "部首部件拆解", type: "mcq", questionText: "「<span class='highlight-word'>江</span>」、「<span class='highlight-word'>河</span>」、「<span class='highlight-word'>湖</span>」都有什麼共同的部首？", options: ["氵 (三點水)", "木", "艹", "扌"], correctAnswer: 0, hint: "這些字都和「水」有關喔！", explanation: "「氵」代表水流。", audioScript: "江、河、湖都有什麼共同的部首？" },
+                    { id: "q1_1_02", topic: "象形文字配對", type: "mcq", questionText: "古代的字寫作一個圓圈，中間有一點 (☉)，代表天上哪個星體？", options: ["月亮", "太陽", "星星", "雲朵"], correctAnswer: 1, hint: "它白天出現，會發光發熱。", explanation: "這是「日」字的象形字。", audioScript: "古代字寫作一個圓圈中間有一點，這代表什麼？" },
+                    { id: "q1_1_03", topic: "基礎筆順與筆畫辨析", type: "stroke", targetChar: "水", questionText: "請觀察「<span class='highlight-word'>水</span>」字的筆順，並在下方畫布中跟著寫一次！", hint: "中間的豎勾要最先寫喔！", explanation: "「水」的筆順是：豎勾、橫撇、撇、捺。做得好！", audioScript: "請在下方畫布寫出水字。" },
+                    { id: "q1_1_04", topic: "簡單量詞及疊字認知", type: "mcq", questionText: "桌子上放著一<span class='highlight-word'>____</span>紅紅的蘋果。", options: ["隻", "個", "條", "本"], correctAnswer: 1, hint: "形容單獨的水果，最常用的量詞？", explanation: "「個」是形容圓形水果最常用的量詞。", audioScript: "桌子上放著一什麼紅紅的蘋果？" }
+                    
+                ],
+                // ⬇️ Level 2: 標準 (進階應用)
+                "level_2": [
+                    { id: "q1_2_01", topic: "同音與形近字辨析", type: "mcq", questionText: "請選出正確的字填空：這座大樓已經（　）工了。", options: ["竣", "峻", "俊", "駿"], correctAnswer: 0, hint: "表示工程完畢，部首和「站立」有關 (立部)。", explanation: "「竣工」代表工程完成。", audioScript: "這座大樓已經什麼工了？" },
+                    { id: "q1_2_02", topic: "錯別字修正", type: "mcq", questionText: "下列哪一個句子中 **沒有** 錯別字？", options: ["他做事總是粗心大意，常常出錯。", "今天天氣清朗，我們去郊遊吧。", "這本書的內客十分豐富。", "他因為生病，所以請了病結。"], correctAnswer: 0, hint: "注意「晴朗」、「內容」、「病假」的正確寫法。", explanation: "選項B應為「晴朗」，選項C應為「內容」，選項D應為「病假」。", audioScript: "下列哪一個句子中沒有錯別字？" },
+                    { id: "q1_2_03", topic: "近反義詞替換", type: "mcq", questionText: "「這座山峰非常 <span class='highlight-word'>陡峭</span>。」句中「陡峭」的反義詞是？", options: ["險峻", "平坦", "高大", "崎嶇"], correctAnswer: 1, hint: "反義詞就是意思相反的詞，不斜的、好走的路叫什麼？", explanation: "「平坦」是「陡峭」的反義詞。", audioScript: "陡峭的反義詞是什麼？" },
+                    { id: "q1_2_04", topic: "詞義與成語填空", type: "mcq", questionText: "大家聽到這個好消息，都高興得____。", options: ["愁眉苦臉", "手舞足蹈", "怒氣沖沖", "依依不捨"], correctAnswer: 1, hint: "高興到手和腳都動起來了！", explanation: "「手舞足蹈」形容非常高興、興奮的樣子。", audioScript: "大家聽到這個好消息，都高興得什麼？" }
+                ],
+                // ⬇️ Level 3: 拔尖 (深度遷移與批判)
+                "level_3": [
+                    { id: "q1_3_01", topic: "成語歸類與褒貶色彩", type: "mcq", questionText: "下列哪一個成語帶有「<span class='highlight-word'>貶義</span>」(用來批評別人)？", options: ["見義勇為", "守望相助", "見風使舵", "捨己為人"], correctAnswer: 2, hint: "哪一個行為是形容人沒有原則，跟著風向改變態度的？", explanation: "「見風使舵」比喻看勢頭行事，是貶義詞。", audioScript: "下列哪一個成語帶有貶義？" },
+                    { id: "q1_3_02", topic: "歇後語/諺語情境配對", type: "mcq", questionText: "「啞巴吃黃連」的下一句是？", options: ["有苦說不出", "一清二楚", "多此一舉", "一場空"], correctAnswer: 0, hint: "黃連非常苦，啞巴吃下去卻無法說話表達。", explanation: "歇後語「啞巴吃黃連——有苦說不出」。", audioScript: "啞巴吃黃連的下一句是什麼？" },
+                    { id: "q1_3_03", topic: "成語故事寓意配對", type: "mcq", questionText: "「<span class='highlight-word'>畫蛇添足</span>」這個成語的寓意是？", options: ["比喻做事非常完美", "比喻多此一舉，反而弄巧成拙", "比喻繪畫技術高超", "比喻做事速度很快"], correctAnswer: 1, hint: "蛇本來沒有腳，幫牠畫上腳是不是多餘的？", explanation: "畫蛇添足比喻做多餘的事，反而不恰當。", audioScript: "畫蛇添足這個成語的寓意是什麼？" },
+                    { id: "q1_3_04", topic: "文言基礎單字解釋", type: "mcq", questionText: "在古文中，「<span class='highlight-word'>汝</span>」通常代表什麼意思？", options: ["我", "你", "他", "我們"], correctAnswer: 1, hint: "古代人稱呼對方常用的字。", explanation: "「汝」在文言文中是第二人稱代詞，意思是「你」。", audioScript: "在古文中，汝通常代表什麼意思？" }
+                ]
+            },
+            // ================== 第 2 範疇：句子與語法 (示範) ==================
+            "domain_2": {
+                // ⬇️ Level 1: 補底
+                "level_1": [
+                    { id: "q2_1_01", topic: "實詞分類辨識", type: "mcq", questionText: "下列哪一個詞語是「<span class='highlight-word'>動詞</span>」(表示動作的詞)？", options: ["蘋果", "美麗", "奔跑", "紅色"], correctAnswer: 2, hint: "哪一個是可以做出來的動作？", explanation: "「奔跑」表示動作，是動詞。", audioScript: "下列哪一個詞語是動詞？" },
+                    { id: "q2_1_02", topic: "詞語排排坐 (重組)", type: "mcq", questionText: "請選出正確的句子順序：<br>(1) 在天上 (2) 小鳥 (3) 飛翔", options: ["(1)(2)(3)", "(2)(1)(3)", "(3)(2)(1)", "(1)(3)(2)"], correctAnswer: 1, hint: "先說「誰 (主語)」，再說「在哪裡做什麼」。", explanation: "正確順序是：小鳥(2) 在天上(1) 飛翔(3)。", audioScript: "請選出正確的句子順序。" }
+                ]
+            }
+            // 未來擴充：只需繼續加入 domain_3, domain_4 ...
+        };
+
+        let currentQuestionsList = [];
+        let globalQuestionIndex = 0; 
+        let scoreInThisMission = 0;
+
+        function initGameData() {
+            const dbKeyDomain = `domain_${domainId}`;
+            const dbKeyLevel = `level_${levelId}`;
+            
+            const domainNames = ["", "1️⃣ 字、詞、成語", "2️⃣ 句子與語法", "3️⃣ 修辭與標點", "4️⃣ 段落與實用文", "5️⃣ 閱讀理解", "6️⃣ 聆聽與說話", "7️⃣ 中華文化", "8️⃣ 綜合寫作"];
+            const levelNames = ["", "🌱 木級 (補底基礎)", "⭐ 銀級 (標準進階)", "🚀 鑽石級 (拔尖遷移)"];
+            
+            document.getElementById('matrix-title').innerText = `${domainNames[domainId] || '未知星系'} ${levelNames[levelId] || ''}`;
+
+            if (questionDatabase[dbKeyDomain] && questionDatabase[dbKeyDomain][dbKeyLevel]) {
+                currentQuestionsList = questionDatabase[dbKeyDomain][dbKeyLevel];
+                renderMatrixGrid();
+            } else {
+                document.getElementById('matrix-content').innerHTML = "<h3>⚠️ 該星系的數據庫尚在建置中，請先返回星圖。</h3>";
+            }
+        }
+
+        window.renderMatrixGrid = function() {
+            const container = document.getElementById('matrix-content');
+            container.innerHTML = ''; 
+
+            // 自動根據 JSON 中的 "topic" 將題目分組
+            const groups = {};
+            currentQuestionsList.forEach((q, index) => {
+                if (!groups[q.topic]) groups[q.topic] = [];
+                groups[q.topic].push({ qData: q, globalIndex: index });
+            });
+
+            for (let topic in groups) {
+                const groupDiv = document.createElement('div');
+                groupDiv.className = 'topic-group';
+                
+                const title = document.createElement('div');
+                title.className = 'topic-title';
+                title.innerText = `📂 ${topic} (${groups[topic].length} 題)`; // 自動計算題數
+                groupDiv.appendChild(title);
+
+                const gridDiv = document.createElement('div');
+                gridDiv.className = 'node-grid';
+                
+                groups[topic].forEach((item, localIndex) => {
+                    const btn = document.createElement('button');
+                    const isSolved = userSolvedQuestions.includes(item.qData.id);
+                    btn.className = `node-btn ${isSolved ? 'solved' : ''}`;
+                    btn.innerHTML = isSolved ? `✔` : `${localIndex + 1}`;
+                    btn.onclick = () => window.startQuestion(item.globalIndex);
+                    gridDiv.appendChild(btn);
+                });
+
+                groupDiv.appendChild(gridDiv);
+                container.appendChild(groupDiv);
+            }
+        }
+
+        window.showGridView = function() {
+            document.getElementById('question-view').style.display = 'none';
+            document.getElementById('grid-view').style.display = 'block';
+            renderMatrixGrid(); 
+        }
+
+        window.startQuestion = function(index) {
+            globalQuestionIndex = index;
+            document.getElementById('grid-view').style.display = 'none';
+            document.getElementById('question-view').style.display = 'block';
+            loadQuestionUI();
+        }
+
+        function loadQuestionUI() {
+            const q = currentQuestionsList[globalQuestionIndex];
+            
+            document.getElementById('q-topic-badge').innerText = q.topic;
+            document.getElementById('q-progress').innerText = `節點 ID: #${globalQuestionIndex + 1}`;
+            document.getElementById('q-text').innerHTML = q.questionText;
+            
+            document.getElementById('hint-box').style.display = 'none';
+            document.getElementById('hint-box').innerHTML = `💡 <b>提示：</b>${q.hint}`;
+            document.getElementById('hint-btn').style.display = q.hint ? 'inline-block' : 'none';
+            document.getElementById('feedback-box').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('back-grid-btn').style.display = 'none';
+
+            // 判斷題目類型：選擇題(mcq) / 手寫題(stroke)
+            if (q.type === 'stroke') {
+                document.getElementById('options-area').style.display = 'none';
+                document.getElementById('handwriting-area').style.display = 'flex';
+                initHanziWriter(q.targetChar);
+            } else {
+                document.getElementById('handwriting-area').style.display = 'none';
+                document.getElementById('options-area').style.display = 'grid';
+                
+                const optionsArea = document.getElementById('options-area');
+                optionsArea.innerHTML = '';
+                q.options.forEach((optText, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.innerHTML = optText;
+                    btn.onclick = () => window.checkAnswer(idx);
+                    optionsArea.appendChild(btn);
+                });
+            }
+        }
+
+        // =========================================
+        // ✍️ 手寫板 (Hanzi Writer) 控制邏輯
+        // =========================================
+        function initHanziWriter(char) {
+            const container = document.getElementById('character-target');
+            container.innerHTML = ''; 
+            
+            hwInstance = HanziWriter.create('character-target', char, {
+                width: 250, height: 250, padding: 10,
+                strokeColor: '#3498DB', 
+                radicalColor: '#1ABC9C', 
+                showOutline: true, 
+                outlineColor: '#E5E8E8', 
+                delayBetweenStrokes: 200, 
+                strokeAnimationSpeed: 2   
+            });
+
+            startCanvasQuiz();
+        }
+
+        function startCanvasQuiz() {
+            hwInstance.quiz({
+                showHintAfterMisses: 1, 
+                onMistake: function(strokeData) {
+                    if (typeof window.playWrongSound === 'function') window.playWrongSound();
+                },
+                onComplete: function(summaryData) {
+                    window.checkAnswer('canvas_success');
+                }
+            });
+        }
+
+        window.resetCanvas = function() { if (hwInstance) hwInstance.quiz(); }
+        window.demoStroke = function() {
+            if (hwInstance) {
+                hwInstance.animateCharacter({
+                    onComplete: function() { setTimeout(() => hwInstance.quiz(), 1000); }
+                });
+            }
+        }
+
+        // =========================================
+        // 🎯 答題驗證邏輯
+        // =========================================
+        window.checkAnswer = async function(selectedValue) {
+            const q = currentQuestionsList[globalQuestionIndex];
+            const feedbackBox = document.getElementById('feedback-box');
+            document.getElementById('hint-btn').style.display = 'none';
+
+            const alreadySolved = userSolvedQuestions.includes(q.id);
+            let isCorrect = false;
+
+            if (q.type === 'stroke') {
+                if (selectedValue === 'canvas_success') isCorrect = true;
+            } else {
+                const btns = document.querySelectorAll('#options-area .option-btn');
+                btns.forEach(btn => btn.disabled = true); 
+                if (selectedValue === q.correctAnswer) {
+                    btns[selectedValue].classList.add('correct');
+                    isCorrect = true;
+                } else {
+                    btns[selectedValue].classList.add('wrong');
+                    btns[q.correctAnswer].classList.add('correct'); 
+                }
+            }
+
+            if (isCorrect) {
+                feedbackBox.style.display = 'block';
+                feedbackBox.style.backgroundColor = '#D5F5E3';
+                feedbackBox.style.color = '#27AE60';
+                feedbackBox.innerHTML = `✅ 數據修復成功！<br><span style="font-size:0.85em; font-weight:normal; color:#1E8449;">${q.explanation}</span>`;
+                if (typeof window.playCorrectSound === 'function') window.playCorrectSound();
+                
+                scoreInThisMission++;
+                
+                if (currentUserUid && db && !alreadySolved) {
+                    try {
+                        const statsRef = doc(db, 'artifacts', sysAppId, 'users', currentUserUid, 'gameData', 'stats');
+                        await setDoc(statsRef, { totalCorrect: increment(1), solvedList: arrayUnion(q.id) }, { merge: true });
+                        userSolvedQuestions.push(q.id);
+                    } catch (e) {}
+                } else if (alreadySolved) {
+                    feedbackBox.innerHTML += `<br><span style="font-size:0.8em; color:#7D6608;">(此節點之前已修復過，不重複給予 EXP)</span>`;
+                }
+            } else {
+                feedbackBox.style.display = 'block';
+                feedbackBox.style.backgroundColor = '#FDEDEC';
+                feedbackBox.style.color = '#C0392B';
+                feedbackBox.innerHTML = `❌ 修復失敗。<br><span style="font-size:0.85em; font-weight:normal; color:#922B21;">${q.explanation}</span>`;
+                if (typeof window.playWrongSound === 'function') window.playWrongSound();
+            }
+
+            document.getElementById('back-grid-btn').style.display = 'block';
+            if (globalQuestionIndex < currentQuestionsList.length - 1) {
+                document.getElementById('next-btn').style.display = 'block';
+            } else {
+                document.getElementById('next-btn').style.display = 'block';
+                document.getElementById('next-btn').innerText = "完成此部分任務 🌟";
+            }
+        };
+
+        window.showHint = function() {
+            document.getElementById('hint-box').style.display = 'block';
+            document.getElementById('hint-btn').style.display = 'none';
+        }
+
+        window.readQuestion = function() {
+            const q = currentQuestionsList[globalQuestionIndex];
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const u = new SpeechSynthesisUtterance(q.audioScript);
+                u.lang = 'zh-HK'; u.rate = 0.85; window.speechSynthesis.speak(u);
+            }
+        };
+
+        window.nextQuestion = function() {
+            if (globalQuestionIndex < currentQuestionsList.length - 1) {
+                globalQuestionIndex++;
+                loadQuestionUI();
+            } else {
+                document.getElementById('question-view').style.display = 'none';
+                const compScreen = document.getElementById('completion-screen');
+                compScreen.style.display = 'block';
+                compScreen.style.animation = 'fadeIn 1s ease';
+                document.getElementById('exp-reward').innerText = `本次探險獲得了 ${scoreInThisMission * 10} 點能量！`;
+            }
+        };
+
+        window.goToDashboard = function() {
+            try {
+                if (window.location.href.startsWith('blob:')) {
+                    alert('提示：在 Canvas 預覽環境中無法跨頁面跳轉。請上傳至 GitHub Pages 後進行完整測試！');
+                } else {
+                    window.location.href = 'dashboard.html';
+                }
+            } catch (e) {
+                alert('提示：預覽環境受限無法跳轉頁面，請在正式發佈環境中測試。');
+            }
+        };
+    </script>
+
+    <!-- 獨立無障礙功能腳本 -->
+    <script>
+        function changeTheme(color) {
+            if (color === 'beige') document.documentElement.style.setProperty('--bg-color', '#FFF8E7');
+            else if (color === 'pink') document.documentElement.style.setProperty('--bg-color', '#FFF0F5');
+        }
+        window.playCorrectSound = function() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator(), gain = ctx.createGain();
+                osc.type = 'sine'; osc.frequency.setValueAtTime(523.25, ctx.currentTime); 
+                osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.1); 
+                gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+                osc.connect(gain); gain.connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime+0.3);
+            } catch (e) {}
+        };
+        window.playWrongSound = function() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator(), gain = ctx.createGain();
+                osc.type = 'triangle'; osc.frequency.setValueAtTime(300, ctx.currentTime); 
+                osc.frequency.exponentialRampToValueAtTime(250, ctx.currentTime + 0.2);
+                gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+                osc.connect(gain); gain.connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime+0.3);
+            } catch (e) {}
+        };
+    </script>
+</body>
+</html>

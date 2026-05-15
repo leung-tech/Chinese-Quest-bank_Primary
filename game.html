@@ -5,73 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>星際戰場 | 時空探險局</title>
     
-    <!-- 強制載入 Noto Sans HK，保護 SpLD 學生視覺 -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@400;700&display=swap" rel="stylesheet">
-    
-    <!-- 【黑科技接入】引入 Hanzi Writer 漢字書寫引擎 -->
     <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
     
     <style>
-        /* =========================================
-           無障礙核心設計 (CSS) 
-           ========================================= */
         :root {
-            --bg-color: #FFF8E7;
-            --text-color: #2C3E50;
-            --btn-primary: #3498DB;
-            --btn-hover: #2980B9;
-            --btn-option: #ECF0F1;
-            --btn-option-hover: #D5DBDB;
-            --success-color: #2ECC71;
+            --bg-color: #FFF8E7; --text-color: #2C3E50;
+            --btn-primary: #3498DB; --btn-hover: #2980B9;
+            --btn-option: #ECF0F1; --btn-option-hover: #D5DBDB; --success-color: #2ECC71;
         }
-
         body {
-            font-family: 'Noto Sans HK', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.8;
-            letter-spacing: 1.5px;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            box-sizing: border-box;
+            font-family: 'Noto Sans HK', sans-serif; background-color: var(--bg-color);
+            color: var(--text-color); line-height: 1.8; letter-spacing: 1.5px;
+            margin: 0; padding: 20px; display: flex; flex-direction: column;
+            align-items: center; min-height: 100vh; box-sizing: border-box;
         }
 
+        /* 頂部資訊欄 */
         .status-bar {
             width: 100%; max-width: 900px; display: flex; justify-content: space-between;
             align-items: center; background: linear-gradient(135deg, #8E44AD, #9B59B6);
-            color: white; padding: 15px 25px; border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 20px; box-sizing: border-box;
+            color: white; padding: 15px 25px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 20px;
         }
-
         .explorer-info { font-size: 1.2em; font-weight: bold; display: flex; align-items: center; gap: 10px; }
         .back-btn-top {
             background: rgba(255,255,255,0.2); color: white; border: none; padding: 5px 15px;
             border-radius: 8px; cursor: pointer; font-weight: bold; transition: background 0.2s;
         }
         .back-btn-top:hover { background: rgba(255,255,255,0.3); }
-
         .udl-toolbar { display: flex; gap: 10px; }
         .udl-btn {
-            background-color: #F2F4F4; color: #34495E; padding: 8px 15px;
-            font-size: 0.9em; border-radius: 15px; border: none; cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-weight: bold;
+            background-color: #F2F4F4; color: #34495E; padding: 8px 15px; font-size: 0.9em;
+            border-radius: 15px; border: none; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-weight: bold;
         }
 
         .container-box {
-            max-width: 900px; width: 100%; background: white; padding: 40px;
-            border-radius: 20px; border: 3px solid #E3F2FD;
-            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.15); box-sizing: border-box; position: relative;
+            max-width: 900px; width: 100%; background: white; padding: 40px; border-radius: 20px;
+            border: 3px solid #E3F2FD; box-shadow: 0 8px 25px rgba(52, 152, 219, 0.15); box-sizing: border-box; position: relative;
         }
 
-        /* 視角 1：任務節點矩陣 (Grid View) */
+        /* 視角 1：任務節點矩陣 */
         #grid-view { display: block; }
         .matrix-header { text-align: left; margin-bottom: 25px; border-bottom: 2px solid #ECF0F1; padding-bottom: 15px; }
         .matrix-title { font-size: 1.8em; color: #2C3E50; font-weight: bold; margin: 0 0 10px 0; }
-        
         .legend-box {
             background-color: #FDFEFE; border: 1px solid #E5E8E8; padding: 10px 20px;
             border-radius: 10px; display: inline-flex; gap: 20px; font-size: 0.95em; align-items: center;
@@ -82,42 +58,35 @@
 
         .topic-group { margin-bottom: 35px; text-align: left; }
         .topic-title {
-            font-size: 1.2em; color: #34495E; background-color: #EBF5FB;
-            display: inline-block; padding: 5px 15px; border-radius: 8px; margin-bottom: 15px; font-weight: bold;
+            font-size: 1.2em; color: #34495E; background-color: #EBF5FB; display: inline-block;
+            padding: 5px 15px; border-radius: 8px; margin-bottom: 15px; font-weight: bold;
         }
         .node-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 12px; }
         .node-btn {
-            background-color: white; border: 2px solid #BDC3C7; color: #2C3E50;
-            height: 50px; border-radius: 12px; font-size: 1.2em; font-weight: bold;
-            cursor: pointer; transition: all 0.2s; display: flex; justify-content: center; align-items: center;
+            background-color: white; border: 2px solid #BDC3C7; color: #2C3E50; height: 50px;
+            border-radius: 12px; font-size: 1.2em; font-weight: bold; cursor: pointer;
+            transition: all 0.2s; display: flex; justify-content: center; align-items: center;
         }
         .node-btn:hover { border-color: var(--btn-primary); background-color: #EBF5FB; transform: translateY(-2px); }
         .node-btn.solved { background-color: #EAFAF1; border-color: var(--success-color); color: var(--success-color); }
 
-        /* 視角 2：題目答題區 (Question View) */
+        /* 視角 2：題目答題區 */
         #question-view { display: none; text-align: center; }
-        
-        /* 【新增】：問題區頂部橫列佈局 */
         .question-header-row {
             display: flex; justify-content: space-between; align-items: center; 
             margin-bottom: 20px; border-bottom: 2px solid #ECF0F1; padding-bottom: 15px;
         }
-
         .domain-badge {
-            display: inline-block; background-color: #117A65; color: white;
-            padding: 5px 15px; border-radius: 20px; font-size: 1em; font-weight: bold;
-            margin-bottom: 0; /* 覆蓋舊的 margin */
+            display: inline-block; background-color: #117A65; color: white; padding: 5px 15px;
+            border-radius: 20px; font-size: 1em; font-weight: bold; margin-bottom: 0;
         }
-        
-        /* 【修改】：取消絕對定位，改為 flex 排版 */
         .progress-text { font-size: 1.1em; font-weight: bold; color: #7F8C8D; }
-        
         .question-text { font-size: 1.8em; margin-bottom: 20px; color: #2C3E50; line-height: 1.6; }
         .highlight-word { color: #2980B9; font-weight: 900; background-color: #EBF5FB; padding: 0 5px; border-radius: 5px; }
 
         .hint-btn {
-            background-color: #FEF9E7; color: #D4AC0D; border: 2px dashed #F1C40F;
-            padding: 8px 20px; border-radius: 20px; font-size: 1em; font-weight: bold; cursor: pointer; margin-bottom: 20px;
+            background-color: #FEF9E7; color: #D4AC0D; border: 2px dashed #F1C40F; padding: 8px 20px;
+            border-radius: 20px; font-size: 1em; font-weight: bold; cursor: pointer; margin-bottom: 20px;
         }
         .hint-btn:hover { background-color: #FCF3CF; }
         .hint-box {
@@ -127,9 +96,9 @@
 
         .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
         .option-btn {
-            font-family: 'Noto Sans HK', sans-serif; background-color: var(--btn-option);
-            color: #2C3E50; border: 3px solid transparent; padding: 20px; font-size: 1.3em;
-            border-radius: 15px; cursor: pointer; transition: all 0.2s; font-weight: bold;
+            font-family: 'Noto Sans HK', sans-serif; background-color: var(--btn-option); color: #2C3E50;
+            border: 3px solid transparent; padding: 20px; font-size: 1.3em; border-radius: 15px;
+            cursor: pointer; transition: all 0.2s; font-weight: bold;
         }
         .option-btn:hover { background-color: var(--btn-option-hover); transform: translateY(-2px); }
         .option-btn.correct { background-color: #D5F5E3; border-color: #2ECC71; color: #27AE60; }
@@ -139,20 +108,18 @@
         .handwriting-area { display: none; flex-direction: column; align-items: center; margin-bottom: 30px; }
         .canvas-container {
             width: 250px; height: 250px; border: 4px dashed #BDC3C7; border-radius: 15px;
-            background-color: #FDFEFE; display: flex; justify-content: center; align-items: center;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.05); margin-bottom: 15px; position: relative;
+            background-color: #FDFEFE; display: flex; justify-content: center; align-items: center; margin-bottom: 15px;
         }
         .canvas-tools { display: flex; gap: 15px; }
 
         .feedback-area {
-            display: none; margin-top: 20px; padding: 20px; border-radius: 15px;
-            font-size: 1.2em; font-weight: bold; animation: fadeIn 0.5s ease forwards; text-align: left;
+            display: none; margin-top: 20px; padding: 20px; border-radius: 15px; font-size: 1.2em;
+            font-weight: bold; animation: fadeIn 0.5s ease forwards; text-align: left;
         }
         .nav-buttons { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
         .next-btn {
-            background-color: var(--btn-primary); color: white; border: none;
-            padding: 15px 40px; font-size: 1.2em; border-radius: 30px;
-            cursor: pointer; font-weight: bold; display: none; box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+            background-color: var(--btn-primary); color: white; border: none; padding: 15px 40px;
+            font-size: 1.2em; border-radius: 30px; cursor: pointer; font-weight: bold; display: none;
         }
         .next-btn:hover { background-color: var(--btn-hover); transform: translateY(-2px); }
 
@@ -178,7 +145,7 @@
         </div>
     </div>
 
-    <!-- 視角 1：任務節點矩陣 (Grid View) -->
+    <!-- 視角 1：任務節點矩陣 -->
     <div class="container-box" id="grid-view">
         <div class="matrix-header">
             <h2 class="matrix-title" id="matrix-title">🚀 載入中...</h2>
@@ -191,16 +158,13 @@
         <div id="matrix-content"></div>
     </div>
 
-
-    <!-- 視角 2：核心答題區 (Question View) -->
+    <!-- 視角 2：答題區 -->
     <div class="container-box" id="question-view">
-        <!-- 【優化】：將徽章、進度、返回目錄按鈕整合在頂部橫列 -->
         <div class="question-header-row">
             <div class="domain-badge" id="q-topic-badge">載入中...</div>
             <div style="display: flex; align-items: center; gap: 15px;">
                 <span class="progress-text" id="q-progress">Node #0</span>
-                <!-- 【新增】：隨時返回目錄的按鈕 -->
-                <button class="udl-btn" onclick="showGridView()" style="background-color: #BDC3C7; color: white; margin: 0; box-shadow: none;">🔙 返回目錄</button>
+                <button class="udl-btn" onclick="showGridView()" style="background-color: #BDC3C7; color: white; margin: 0;">🔙 返回目錄</button>
             </div>
         </div>
         
@@ -225,21 +189,17 @@
         <div class="feedback-area" id="feedback-box"></div>
         
         <div class="nav-buttons">
-            <button class="next-btn" id="back-grid-btn" onclick="showGridView()" style="background-color:#95A5A6; display:none;">返回列表</button>
             <button class="next-btn" id="next-btn" onclick="nextQuestion()">下一節點 🚀</button>
         </div>
     </div>
 
-    <!-- 任務完成畫面 -->
     <div class="container-box" id="completion-screen">
         <h2>🎉 任務板塊圓滿完成！</h2>
         <p id="exp-reward">獲得了 0 點能量！</p>
         <button class="next-btn" style="display:inline-block;" onclick="goToDashboard()">返回任務星圖</button>
     </div>
 
-    <!-- =========================================
-         系統邏輯與題庫載入
-         ========================================= -->
+    <!-- Firebase 邏輯與 8大範疇資料庫 -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getAuth, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
@@ -253,18 +213,13 @@
             messagingSenderId: "442065508277",
             appId: "1:442065508277:web:299279646ef236fa27abfc"
         };
-
         const sysAppId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        let currentUserUid = null;
-        let db;
-        let userSolvedQuestions = []; 
-        let hwInstance = null; 
+        let currentUserUid = null; let db; let userSolvedQuestions = []; let hwInstance = null; 
 
         try {
             const app = initializeApp(firebaseConfig);
             const auth = getAuth(app);
             db = getFirestore(app);
-            
             onAuthStateChanged(auth, async (user) => {
                 if (user) {
                     currentUserUid = user.uid;
@@ -272,7 +227,6 @@
                         const docSnap = await getDoc(doc(db, 'artifacts', sysAppId, 'users', user.uid, 'profile', 'info'));
                         document.getElementById('player-greeting').innerHTML = `🧑‍🚀 ${docSnap.exists() ? docSnap.data().name : '星際新兵'}`;
                     } catch(e) {}
-                    
                     onSnapshot(doc(db, 'artifacts', sysAppId, 'users', user.uid, 'gameData', 'stats'), (statsSnap) => {
                         if (statsSnap.exists()) {
                             userSolvedQuestions = statsSnap.data().solvedList || [];
@@ -281,54 +235,107 @@
                         if (document.getElementById('grid-view').style.display !== 'none') renderMatrixGrid();
                     });
                     initGameData();
-                } else {
-                    signInAnonymously(auth).catch(() => { initGameData(); });
-                }
+                } else { signInAnonymously(auth).catch(() => { initGameData(); }); }
             });
         } catch (error) { initGameData(); }
 
         /* =========================================
-           🧠 終極題庫結構範本 (Blueprint Database)
+           🧠 【終極展示庫】：全 8 範疇，1~3 難度 展示
            ========================================= */
         const urlParams = new URLSearchParams(window.location.search);
         const domainId = parseInt(urlParams.get('domain')) || 1;
         const levelId = parseInt(urlParams.get('level')) || 1;
 
         const questionDatabase = {
-            // ================== 第 1 範疇：字、詞、成語 ==================
             "domain_1": {
-                // ⬇️ Level 1: 補底 (基礎建立) 
                 "level_1": [
-                    { id: "q1_1_01", topic: "部首部件拆解", type: "mcq", questionText: "「<span class='highlight-word'>江</span>」、「<span class='highlight-word'>河</span>」、「<span class='highlight-word'>湖</span>」都有什麼共同的部首？", options: ["氵 (三點水)", "木", "艹", "扌"], correctAnswer: 0, hint: "這些字都和「水」有關喔！", explanation: "「氵」代表水流。", audioScript: "江、河、湖都有什麼共同的部首？" },
-                    { id: "q1_1_02", topic: "象形文字配對", type: "mcq", questionText: "古代的字寫作一個圓圈，中間有一點 (☉)，代表天上哪個星體？", options: ["月亮", "太陽", "星星", "雲朵"], correctAnswer: 1, hint: "它白天出現，會發光發熱。", explanation: "這是「日」字的象形字。", audioScript: "古代字寫作一個圓圈中間有一點，這代表什麼？" },
-                    { id: "q1_1_03", topic: "基礎筆順與筆畫辨析", type: "stroke", targetChar: "水", questionText: "請觀察「<span class='highlight-word'>水</span>」字的筆順，並在下方畫布中跟著寫一次！", hint: "中間的豎勾要最先寫喔！", explanation: "「水」的筆順是：豎勾、橫撇、撇、捺。做得好！", audioScript: "請在下方畫布寫出水字。" },
-                    { id: "q1_1_04", topic: "簡單量詞及疊字認知", type: "mcq", questionText: "桌子上放著一<span class='highlight-word'>____</span>紅紅的蘋果。", options: ["隻", "個", "條", "本"], correctAnswer: 1, hint: "形容單獨的水果，最常用的量詞？", explanation: "「個」是形容圓形水果最常用的量詞。", audioScript: "桌子上放著一什麼紅紅的蘋果？" }
-                    
+                    { id: "q1_1_1", topic: "部首部件拆解", type: "mcq", questionText: "「<span class='highlight-word'>江、河、湖</span>」都有什麼共同的部首？", options: ["氵", "木", "艹", "扌"], correctAnswer: 0, hint: "都和水有關。", explanation: "「氵」代表水流。", audioScript: "江河湖都有什麼共同部首？" },
+                    { id: "q1_1_2", topic: "基礎筆順", type: "stroke", targetChar: "水", questionText: "請寫出「<span class='highlight-word'>水</span>」字！", hint: "中間豎勾先寫。", explanation: "筆順：豎勾、橫撇、撇、捺。", audioScript: "請寫水字。" }
                 ],
-                // ⬇️ Level 2: 標準 (進階應用)
                 "level_2": [
-                    { id: "q1_2_01", topic: "同音與形近字辨析", type: "mcq", questionText: "請選出正確的字填空：這座大樓已經（　）工了。", options: ["竣", "峻", "俊", "駿"], correctAnswer: 0, hint: "表示工程完畢，部首和「站立」有關 (立部)。", explanation: "「竣工」代表工程完成。", audioScript: "這座大樓已經什麼工了？" },
-                    { id: "q1_2_02", topic: "錯別字修正", type: "mcq", questionText: "下列哪一個句子中 **沒有** 錯別字？", options: ["他做事總是粗心大意，常常出錯。", "今天天氣清朗，我們去郊遊吧。", "這本書的內客十分豐富。", "他因為生病，所以請了病結。"], correctAnswer: 0, hint: "注意「晴朗」、「內容」、「病假」的正確寫法。", explanation: "選項B應為「晴朗」，選項C應為「內容」，選項D應為「病假」。", audioScript: "下列哪一個句子中沒有錯別字？" },
-                    { id: "q1_2_03", topic: "近反義詞替換", type: "mcq", questionText: "「這座山峰非常 <span class='highlight-word'>陡峭</span>。」句中「陡峭」的反義詞是？", options: ["險峻", "平坦", "高大", "崎嶇"], correctAnswer: 1, hint: "反義詞就是意思相反的詞，不斜的、好走的路叫什麼？", explanation: "「平坦」是「陡峭」的反義詞。", audioScript: "陡峭的反義詞是什麼？" },
-                    { id: "q1_2_04", topic: "詞義與成語填空", type: "mcq", questionText: "大家聽到這個好消息，都高興得____。", options: ["愁眉苦臉", "手舞足蹈", "怒氣沖沖", "依依不捨"], correctAnswer: 1, hint: "高興到手和腳都動起來了！", explanation: "「手舞足蹈」形容非常高興、興奮的樣子。", audioScript: "大家聽到這個好消息，都高興得什麼？" }
+                    { id: "q1_2_1", topic: "錯別字修正", type: "mcq", questionText: "這本書的內<span class='highlight-word'>客</span>十分豐富。(改錯字)", options: ["客->容", "客->各", "分->分", "富->富"], correctAnswer: 0, hint: "內容的容。", explanation: "應為「內容」。", audioScript: "改錯字：內客。" }
                 ],
-                // ⬇️ Level 3: 拔尖 (深度遷移與批判)
                 "level_3": [
-                    { id: "q1_3_01", topic: "成語歸類與褒貶色彩", type: "mcq", questionText: "下列哪一個成語帶有「<span class='highlight-word'>貶義</span>」(用來批評別人)？", options: ["見義勇為", "守望相助", "見風使舵", "捨己為人"], correctAnswer: 2, hint: "哪一個行為是形容人沒有原則，跟著風向改變態度的？", explanation: "「見風使舵」比喻看勢頭行事，是貶義詞。", audioScript: "下列哪一個成語帶有貶義？" },
-                    { id: "q1_3_02", topic: "歇後語/諺語情境配對", type: "mcq", questionText: "「啞巴吃黃連」的下一句是？", options: ["有苦說不出", "一清二楚", "多此一舉", "一場空"], correctAnswer: 0, hint: "黃連非常苦，啞巴吃下去卻無法說話表達。", explanation: "歇後語「啞巴吃黃連——有苦說不出」。", audioScript: "啞巴吃黃連的下一句是什麼？" },
-                    { id: "q1_3_03", topic: "成語故事寓意配對", type: "mcq", questionText: "「<span class='highlight-word'>畫蛇添足</span>」這個成語的寓意是？", options: ["比喻做事非常完美", "比喻多此一舉，反而弄巧成拙", "比喻繪畫技術高超", "比喻做事速度很快"], correctAnswer: 1, hint: "蛇本來沒有腳，幫牠畫上腳是不是多餘的？", explanation: "畫蛇添足比喻做多餘的事，反而不恰當。", audioScript: "畫蛇添足這個成語的寓意是什麼？" },
-                    { id: "q1_3_04", topic: "文言基礎單字解釋", type: "mcq", questionText: "在古文中，「<span class='highlight-word'>汝</span>」通常代表什麼意思？", options: ["我", "你", "他", "我們"], correctAnswer: 1, hint: "古代人稱呼對方常用的字。", explanation: "「汝」在文言文中是第二人稱代詞，意思是「你」。", audioScript: "在古文中，汝通常代表什麼意思？" }
+                    { id: "q1_3_1", topic: "成語褒貶色彩", type: "mcq", questionText: "下列哪個成語帶有「<span class='highlight-word'>貶義</span>」？", options: ["見義勇為", "捨己為人", "見風使舵", "守望相助"], correctAnswer: 2, hint: "形容沒原則。", explanation: "見風使舵是貶義詞。", audioScript: "哪個成語有貶義？" }
                 ]
             },
-            // ================== 第 2 範疇：句子與語法 (示範) ==================
             "domain_2": {
-                // ⬇️ Level 1: 補底
                 "level_1": [
-                    { id: "q2_1_01", topic: "實詞分類辨識", type: "mcq", questionText: "下列哪一個詞語是「<span class='highlight-word'>動詞</span>」(表示動作的詞)？", options: ["蘋果", "美麗", "奔跑", "紅色"], correctAnswer: 2, hint: "哪一個是可以做出來的動作？", explanation: "「奔跑」表示動作，是動詞。", audioScript: "下列哪一個詞語是動詞？" },
-                    { id: "q2_1_02", topic: "詞語排排坐 (重組)", type: "mcq", questionText: "請選出正確的句子順序：<br>(1) 在天上 (2) 小鳥 (3) 飛翔", options: ["(1)(2)(3)", "(2)(1)(3)", "(3)(2)(1)", "(1)(3)(2)"], correctAnswer: 1, hint: "先說「誰 (主語)」，再說「在哪裡做什麼」。", explanation: "正確順序是：小鳥(2) 在天上(1) 飛翔(3)。", audioScript: "請選出正確的句子順序。" }
+                    { id: "q2_1_1", topic: "詞語重組", type: "mcq", questionText: "重組句子：(1)在天上 (2)小鳥 (3)飛翔", options: ["123", "213", "321", "132"], correctAnswer: 1, hint: "誰 + 在哪裡 + 動作。", explanation: "小鳥在天上飛翔。", audioScript: "重組句子。" }
+                ],
+                "level_2": [
+                    { id: "q2_2_1", topic: "把/被字句轉換", type: "mcq", questionText: "「貓吃了魚」改寫為被字句是？", options: ["魚把貓吃了", "魚被貓吃了", "貓被魚吃了", "貓把魚吃了"], correctAnswer: 1, hint: "誰是被吃的？", explanation: "魚是被吃的對象。", audioScript: "貓吃了魚的被字句。" }
+                ],
+                "level_3": [
+                    { id: "q2_3_1", topic: "病句診斷", type: "mcq", questionText: "「我大約肯定他會來。」哪裡出錯？", options: ["詞語搭配不當", "前後矛盾", "成分殘缺", "意思重複"], correctAnswer: 1, hint: "大約是不確定，肯定是很確定。", explanation: "大約和肯定前後矛盾。", audioScript: "這句話哪裡錯了？" }
+                ]
+            },
+            "domain_3": {
+                "level_1": [
+                    { id: "q3_1_1", topic: "基礎標點", type: "mcq", questionText: "「你好嗎<span class='highlight-word'>____</span>」該填入什麼標點？", options: ["。", "？", "！", "、"], correctAnswer: 1, hint: "這是一個問句。", explanation: "疑問句用問號。", audioScript: "你好嗎，該填什麼標點？" }
+                ],
+                "level_2": [
+                    { id: "q3_2_1", topic: "修辭辨析", type: "mcq", questionText: "「太陽對著我微笑。」用了什麼修辭？", options: ["比喻", "擬人", "排比", "誇張"], correctAnswer: 1, hint: "太陽像人一樣會微笑。", explanation: "賦予死物人的動作，是擬人。", audioScript: "太陽對我微笑是什麼修辭？" }
+                ],
+                "level_3": [
+                    { id: "q3_3_1", topic: "特殊標點", type: "mcq", questionText: "「他欲言又止：『其實我……』」省略號代表什麼？", options: ["說話斷斷續續", "話未說完", "聲音延長", "列舉省略"], correctAnswer: 1, hint: "欲言又止代表不想或不敢說下去了。", explanation: "這裡表示話語未說完。", audioScript: "省略號代表什麼？" }
+                ]
+            },
+            "domain_4": {
+                "level_1": [
+                    { id: "q4_1_1", topic: "排句成段", type: "mcq", questionText: "(1)然後刷牙 (2)我先起床 (3)最後吃早餐。順序是？", options: ["123", "213", "321", "231"], correctAnswer: 1, hint: "注意「先、然後、最後」。", explanation: "我先起床，然後刷牙，最後吃早餐。", audioScript: "句子排序。" }
+                ],
+                "level_2": [
+                    { id: "q4_2_1", topic: "實用文格式", type: "mcq", questionText: "寫「便條」時，第一行頂格要寫什麼？", options: ["日期", "正文", "上款 (收條人)", "下款 (發條人)"], correctAnswer: 2, hint: "你要寫給誰？", explanation: "便條開頭要先寫上款。", audioScript: "便條第一行寫什麼？" }
+                ],
+                "level_3": [
+                    { id: "q4_3_1", topic: "書信敬謙詞", type: "mcq", questionText: "寫信給長輩，稱呼對方的父親應用？", options: ["家父", "令尊", "家嚴", "令堂"], correctAnswer: 1, hint: "尊稱別人的父親。", explanation: "令尊是尊稱對方的父親；家父是稱呼自己的父親。", audioScript: "稱呼對方的父親應用什麼？" }
+                ]
+            },
+            "domain_5": {
+                "level_1": [
+                    { id: "q5_1_1", topic: "5W1H 資訊提取", type: "mcq", questionText: "「昨天下午，小明在圖書館看書。」請問事件發生在何時？", options: ["小明", "圖書館", "昨天下午", "看書"], correctAnswer: 2, hint: "尋找時間詞。", explanation: "時間是昨天下午。", audioScript: "事件發生在何時？" }
+                ],
+                "level_2": [
+                    { id: "q5_2_1", topic: "詞義推斷", type: "mcq", questionText: "「他氣得『七竅生煙』。」猜測七竅生煙的意思？", options: ["生病了", "非常生氣", "正在抽菸", "覺得很熱"], correctAnswer: 1, hint: "前面說「氣得」。", explanation: "形容氣憤到了極點。", audioScript: "七竅生煙是什麼意思？" }
+                ],
+                "level_3": [
+                    { id: "q5_3_1", topic: "寫作手法", type: "mcq", questionText: "這篇文章先寫結果，再交代原因，屬於什麼敘事手法？", options: ["順敘", "倒敘", "插敘", "散敘"], correctAnswer: 1, hint: "把結局倒過來放前面。", explanation: "先寫結果是倒敘法。", audioScript: "這屬於什麼敘事手法？" }
+                ]
+            },
+            "domain_6": {
+                "level_1": [
+                    { id: "q6_1_1", topic: "指令執行", type: "mcq", questionText: "老師說：「請把紅色書本放在桌子上。」你該怎麼做？", options: ["拿藍色書", "把紅書放地上", "把紅書放桌上", "打開紅書"], correctAnswer: 2, hint: "聽清楚顏色和位置。", explanation: "執行精準指令。", audioScript: "你該怎麼做？" }
+                ],
+                "level_2": [
+                    { id: "q6_2_1", topic: "語氣辨識", type: "mcq", questionText: "「哎呀！我怎麼又忘記帶鑰匙了！」這是什麼語氣？", options: ["開心", "懊惱", "生氣", "平靜"], correctAnswer: 1, hint: "忘記事情會覺得？", explanation: "表現出後悔懊惱。", audioScript: "這是什麼語氣？" }
+                ],
+                "level_3": [
+                    { id: "q6_3_1", topic: "協商交際", type: "mcq", questionText: "同學不小心弄壞你的筆，最好的回應是？", options: ["大罵他", "叫他賠錢", "沒關係，下次小心點", "不理他"], correctAnswer: 2, hint: "要保持良好交際態度。", explanation: "寬容應對是最好的交際。", audioScript: "最好的回應是什麼？" }
+                ]
+            },
+            "domain_7": {
+                "level_1": [
+                    { id: "q7_1_1", topic: "親屬稱謂", type: "mcq", questionText: "爸爸的哥哥，你應該叫他？", options: ["叔叔", "伯父", "舅舅", "姑父"], correctAnswer: 1, hint: "比爸爸大的兄弟。", explanation: "爸爸的哥哥叫伯父。", audioScript: "爸爸的哥哥叫什麼？" }
+                ],
+                "level_2": [
+                    { id: "q7_2_1", topic: "節日習俗", type: "mcq", questionText: "農曆八月十五日會吃月餅，這是什麼節日？", options: ["中秋節", "端午節", "春節", "清明節"], correctAnswer: 0, hint: "賞月吃月餅。", explanation: "八月十五是中秋節。", audioScript: "這是什麼節日？" }
+                ],
+                "level_3": [
+                    { id: "q7_3_1", topic: "古詩意境", type: "mcq", questionText: "「床前明月光，疑是地上霜。」表達了什麼情感？", options: ["開心", "思鄉", "憤怒", "害怕"], correctAnswer: 1, hint: "李白看著月亮想起了故鄉。", explanation: "《靜夜思》表達思鄉之情。", audioScript: "這首詩表達什麼情感？" }
+                ]
+            },
+            "domain_8": {
+                "level_1": [
+                    { id: "q8_1_1", topic: "看圖造句", type: "mcq", questionText: "圖片中有個男孩在吃蘋果。哪個句子最適合？", options: ["他在睡覺", "男孩在吃紅紅的蘋果", "蘋果在桌上", "他不喜歡蘋果"], correctAnswer: 1, hint: "描述人物的動作。", explanation: "準確描述了動作與物件。", audioScript: "哪個句子最適合？" }
+                ],
+                "level_2": [
+                    { id: "q8_2_1", topic: "文章結構", type: "mcq", questionText: "寫遊記時，最後一段通常要寫什麼？", options: ["天氣", "出發時間", "遊玩的感受", "準備的食物"], correctAnswer: 2, hint: "結尾要抒發心情。", explanation: "結尾通常寫感想與總結。", audioScript: "遊記最後一段寫什麼？" }
+                ],
+                "level_3": [
+                    { id: "q8_3_1", topic: "修辭入文", type: "mcq", questionText: "想讓句子更生動，可以把「花開了」改成？", options: ["花長大了", "花朵展露了笑顏", "花很漂亮", "有很多花"], correctAnswer: 1, hint: "使用擬人法。", explanation: "擬人手法讓句子更具畫面感。", audioScript: "可以把花開了改成什麼？" }
                 ]
             }
-            // 未來擴充：只需繼續加入 domain_3, domain_4 ...
         };
 
         let currentQuestionsList = [];
@@ -339,8 +346,8 @@
             const dbKeyDomain = `domain_${domainId}`;
             const dbKeyLevel = `level_${levelId}`;
             
-            const domainNames = ["", "1️⃣ 字、詞、成語", "2️⃣ 句子與語法", "3️⃣ 修辭與標點", "4️⃣ 段落與實用文", "5️⃣ 閱讀理解", "6️⃣ 聆聽與說話", "7️⃣ 中華文化", "8️⃣ 綜合寫作"];
-            const levelNames = ["", "🌱 木級 (補底基礎)", "⭐ 銀級 (標準進階)", "🚀 鑽石級 (拔尖遷移)"];
+            const domainNames = ["", "1️⃣ 字詞成語", "2️⃣ 句子語法", "3️⃣ 修辭標點", "4️⃣ 段落實用文", "5️⃣ 閱讀理解", "6️⃣ 聆聽說話", "7️⃣ 中華文化", "8️⃣ 綜合寫作"];
+            const levelNames = ["", "🌱 木級", "⭐ 銀級", "🚀 鑽石級"];
             
             document.getElementById('matrix-title').innerText = `${domainNames[domainId] || '未知星系'} ${levelNames[levelId] || ''}`;
 
@@ -356,7 +363,6 @@
             const container = document.getElementById('matrix-content');
             container.innerHTML = ''; 
 
-            // 自動根據 JSON 中的 "topic" 將題目分組
             const groups = {};
             currentQuestionsList.forEach((q, index) => {
                 if (!groups[q.topic]) groups[q.topic] = [];
@@ -366,10 +372,9 @@
             for (let topic in groups) {
                 const groupDiv = document.createElement('div');
                 groupDiv.className = 'topic-group';
-                
                 const title = document.createElement('div');
                 title.className = 'topic-title';
-                title.innerText = `📂 ${topic} (${groups[topic].length} 題)`; // 自動計算題數
+                title.innerText = `📂 ${topic} (${groups[topic].length}題)`;
                 groupDiv.appendChild(title);
 
                 const gridDiv = document.createElement('div');
@@ -383,7 +388,6 @@
                     btn.onclick = () => window.startQuestion(item.globalIndex);
                     gridDiv.appendChild(btn);
                 });
-
                 groupDiv.appendChild(gridDiv);
                 container.appendChild(groupDiv);
             }
@@ -406,7 +410,7 @@
             const q = currentQuestionsList[globalQuestionIndex];
             
             document.getElementById('q-topic-badge').innerText = q.topic;
-            document.getElementById('q-progress').innerText = `節點 ID: #${globalQuestionIndex + 1}`;
+            document.getElementById('q-progress').innerText = `節點 #${globalQuestionIndex + 1}`;
             document.getElementById('q-text').innerHTML = q.questionText;
             
             document.getElementById('hint-box').style.display = 'none';
@@ -414,9 +418,7 @@
             document.getElementById('hint-btn').style.display = q.hint ? 'inline-block' : 'none';
             document.getElementById('feedback-box').style.display = 'none';
             document.getElementById('next-btn').style.display = 'none';
-            document.getElementById('back-grid-btn').style.display = 'none';
 
-            // 判斷題目類型：選擇題(mcq) / 手寫題(stroke)
             if (q.type === 'stroke') {
                 document.getElementById('options-area').style.display = 'none';
                 document.getElementById('handwriting-area').style.display = 'flex';
@@ -424,68 +426,41 @@
             } else {
                 document.getElementById('handwriting-area').style.display = 'none';
                 document.getElementById('options-area').style.display = 'grid';
-                
                 const optionsArea = document.getElementById('options-area');
                 optionsArea.innerHTML = '';
                 q.options.forEach((optText, idx) => {
                     const btn = document.createElement('button');
-                    btn.className = 'option-btn';
-                    btn.innerHTML = optText;
+                    btn.className = 'option-btn'; btn.innerHTML = optText;
                     btn.onclick = () => window.checkAnswer(idx);
                     optionsArea.appendChild(btn);
                 });
             }
         }
 
-        // =========================================
-        // ✍️ 手寫板 (Hanzi Writer) 控制邏輯
-        // =========================================
         function initHanziWriter(char) {
-            const container = document.getElementById('character-target');
-            container.innerHTML = ''; 
-            
+            document.getElementById('character-target').innerHTML = ''; 
             hwInstance = HanziWriter.create('character-target', char, {
-                width: 250, height: 250, padding: 10,
-                strokeColor: '#3498DB', 
-                radicalColor: '#1ABC9C', 
-                showOutline: true, 
-                outlineColor: '#E5E8E8', 
-                delayBetweenStrokes: 200, 
-                strokeAnimationSpeed: 2   
+                width: 250, height: 250, padding: 10, strokeColor: '#3498DB', radicalColor: '#1ABC9C', 
+                showOutline: true, outlineColor: '#E5E8E8', delayBetweenStrokes: 200, strokeAnimationSpeed: 2   
             });
-
-            startCanvasQuiz();
-        }
-
-        function startCanvasQuiz() {
             hwInstance.quiz({
                 showHintAfterMisses: 1, 
-                onMistake: function(strokeData) {
-                    if (typeof window.playWrongSound === 'function') window.playWrongSound();
-                },
-                onComplete: function(summaryData) {
-                    window.checkAnswer('canvas_success');
-                }
+                onMistake: function(strokeData) { if (typeof window.playWrongSound === 'function') window.playWrongSound(); },
+                onComplete: function(summaryData) { window.checkAnswer('canvas_success'); }
             });
         }
 
         window.resetCanvas = function() { if (hwInstance) hwInstance.quiz(); }
         window.demoStroke = function() {
             if (hwInstance) {
-                hwInstance.animateCharacter({
-                    onComplete: function() { setTimeout(() => hwInstance.quiz(), 1000); }
-                });
+                hwInstance.animateCharacter({ onComplete: function() { setTimeout(() => hwInstance.quiz(), 1000); } });
             }
         }
 
-        // =========================================
-        // 🎯 答題驗證邏輯
-        // =========================================
         window.checkAnswer = async function(selectedValue) {
             const q = currentQuestionsList[globalQuestionIndex];
             const feedbackBox = document.getElementById('feedback-box');
             document.getElementById('hint-btn').style.display = 'none';
-
             const alreadySolved = userSolvedQuestions.includes(q.id);
             let isCorrect = false;
 
@@ -495,23 +470,17 @@
                 const btns = document.querySelectorAll('#options-area .option-btn');
                 btns.forEach(btn => btn.disabled = true); 
                 if (selectedValue === q.correctAnswer) {
-                    btns[selectedValue].classList.add('correct');
-                    isCorrect = true;
+                    btns[selectedValue].classList.add('correct'); isCorrect = true;
                 } else {
-                    btns[selectedValue].classList.add('wrong');
-                    btns[q.correctAnswer].classList.add('correct'); 
+                    btns[selectedValue].classList.add('wrong'); btns[q.correctAnswer].classList.add('correct'); 
                 }
             }
 
             if (isCorrect) {
-                feedbackBox.style.display = 'block';
-                feedbackBox.style.backgroundColor = '#D5F5E3';
-                feedbackBox.style.color = '#27AE60';
+                feedbackBox.style.display = 'block'; feedbackBox.style.backgroundColor = '#D5F5E3'; feedbackBox.style.color = '#27AE60';
                 feedbackBox.innerHTML = `✅ 數據修復成功！<br><span style="font-size:0.85em; font-weight:normal; color:#1E8449;">${q.explanation}</span>`;
                 if (typeof window.playCorrectSound === 'function') window.playCorrectSound();
-                
                 scoreInThisMission++;
-                
                 if (currentUserUid && db && !alreadySolved) {
                     try {
                         const statsRef = doc(db, 'artifacts', sysAppId, 'users', currentUserUid, 'gameData', 'stats');
@@ -519,79 +488,59 @@
                         userSolvedQuestions.push(q.id);
                     } catch (e) {}
                 } else if (alreadySolved) {
-                    feedbackBox.innerHTML += `<br><span style="font-size:0.8em; color:#7D6608;">(此節點之前已修復過，不重複給予 EXP)</span>`;
+                    feedbackBox.innerHTML += `<br><span style="font-size:0.8em; color:#7D6608;">(已修復過，不重複給予 EXP)</span>`;
                 }
             } else {
-                feedbackBox.style.display = 'block';
-                feedbackBox.style.backgroundColor = '#FDEDEC';
-                feedbackBox.style.color = '#C0392B';
+                feedbackBox.style.display = 'block'; feedbackBox.style.backgroundColor = '#FDEDEC'; feedbackBox.style.color = '#C0392B';
                 feedbackBox.innerHTML = `❌ 修復失敗。<br><span style="font-size:0.85em; font-weight:normal; color:#922B21;">${q.explanation}</span>`;
                 if (typeof window.playWrongSound === 'function') window.playWrongSound();
             }
 
-            document.getElementById('back-grid-btn').style.display = 'block';
             if (globalQuestionIndex < currentQuestionsList.length - 1) {
                 document.getElementById('next-btn').style.display = 'block';
             } else {
                 document.getElementById('next-btn').style.display = 'block';
-                document.getElementById('next-btn').innerText = "完成此部分任務 🌟";
+                document.getElementById('next-btn').innerText = "完成板塊 🌟";
             }
         };
 
         window.showHint = function() {
-            document.getElementById('hint-box').style.display = 'block';
-            document.getElementById('hint-btn').style.display = 'none';
+            document.getElementById('hint-box').style.display = 'block'; document.getElementById('hint-btn').style.display = 'none';
         }
-
         window.readQuestion = function() {
             const q = currentQuestionsList[globalQuestionIndex];
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
-                const u = new SpeechSynthesisUtterance(q.audioScript);
-                u.lang = 'zh-HK'; u.rate = 0.85; window.speechSynthesis.speak(u);
+                const u = new SpeechSynthesisUtterance(q.audioScript); u.lang = 'zh-HK'; u.rate = 0.85; window.speechSynthesis.speak(u);
             }
         };
 
         window.nextQuestion = function() {
             if (globalQuestionIndex < currentQuestionsList.length - 1) {
-                globalQuestionIndex++;
-                loadQuestionUI();
+                globalQuestionIndex++; loadQuestionUI();
             } else {
                 document.getElementById('question-view').style.display = 'none';
                 const compScreen = document.getElementById('completion-screen');
-                compScreen.style.display = 'block';
-                compScreen.style.animation = 'fadeIn 1s ease';
+                compScreen.style.display = 'block'; compScreen.style.animation = 'fadeIn 1s ease';
                 document.getElementById('exp-reward').innerText = `本次探險獲得了 ${scoreInThisMission * 10} 點能量！`;
             }
         };
 
         window.goToDashboard = function() {
             try {
-                if (window.location.href.startsWith('blob:')) {
-                    alert('提示：在 Canvas 預覽環境中無法跨頁面跳轉。請上傳至 GitHub Pages 後進行完整測試！');
-                } else {
-                    window.location.href = 'dashboard.html';
-                }
-            } catch (e) {
-                alert('提示：預覽環境受限無法跳轉頁面，請在正式發佈環境中測試。');
-            }
+                if (window.location.href.startsWith('blob:')) alert('提示：預覽環境中無法跳轉，請至 GitHub 測試。');
+                else window.location.href = 'dashboard.html';
+            } catch (e) { alert('提示：預覽環境受限。'); }
         };
     </script>
-
-    <!-- 獨立無障礙功能腳本 -->
     <script>
-        function changeTheme(color) {
-            if (color === 'beige') document.documentElement.style.setProperty('--bg-color', '#FFF8E7');
-            else if (color === 'pink') document.documentElement.style.setProperty('--bg-color', '#FFF0F5');
-        }
+        function changeTheme(color) { document.documentElement.style.setProperty('--bg-color', color === 'beige' ? '#FFF8E7' : '#FFF0F5'); }
         window.playCorrectSound = function() {
             try {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
                 const osc = ctx.createOscillator(), gain = ctx.createGain();
-                osc.type = 'sine'; osc.frequency.setValueAtTime(523.25, ctx.currentTime); 
-                osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.1); 
-                gain.gain.setValueAtTime(0.3, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+                osc.type = 'sine'; osc.frequency.setValueAtTime(523.25, ctx.currentTime); osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.1); 
+                gain.gain.setValueAtTime(0.3, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
                 osc.connect(gain); gain.connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime+0.3);
             } catch (e) {}
         };
@@ -599,10 +548,8 @@
             try {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
                 const osc = ctx.createOscillator(), gain = ctx.createGain();
-                osc.type = 'triangle'; osc.frequency.setValueAtTime(300, ctx.currentTime); 
-                osc.frequency.exponentialRampToValueAtTime(250, ctx.currentTime + 0.2);
-                gain.gain.setValueAtTime(0.3, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+                osc.type = 'triangle'; osc.frequency.setValueAtTime(300, ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(250, ctx.currentTime + 0.2);
+                gain.gain.setValueAtTime(0.3, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
                 osc.connect(gain); gain.connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime+0.3);
             } catch (e) {}
         };

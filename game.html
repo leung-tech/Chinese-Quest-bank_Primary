@@ -240,159 +240,1025 @@
         } catch (error) { initGameData(); }
 
         /* =========================================
-           🧠 【終極展示庫】：全 8 範疇，1~3 難度 展示
+           🧠 【終極展示庫】：加入教學大標題 (Level 對應)
            ========================================= */
         const urlParams = new URLSearchParams(window.location.search);
         const domainId = parseInt(urlParams.get('domain')) || 1;
         const levelId = parseInt(urlParams.get('level')) || 1;
 
         const questionDatabase = {
-            // ================== 第 1 範疇：字、詞、成語 ==================
             "domain_1": {
                 "level_1": [
-                    { id: "q1_1_01", topic: "部首部件拆解", type: "mcq", questionText: "「<span class='highlight-word'>江</span>」、「<span class='highlight-word'>河</span>」、「<span class='highlight-word'>湖</span>」都有什麼共同的部首？", options: ["氵 (三點水)", "木", "艹", "扌"], correctAnswer: 0, hint: "這些字都和「水」有關喔！", explanation: "「氵」代表水流。", audioScript: "江河湖都有什麼共同部首？" },
-                    { id: "q1_1_02", topic: "象形/指事文字配對", type: "mcq", questionText: "古代的字寫作一個圓圈，中間有一點 (☉)，這代表天上哪一個星體？", options: ["月亮", "太陽", "星星", "雲朵"], correctAnswer: 1, hint: "它白天出現，會發光發熱。", explanation: "這是「日」的象形字。", audioScript: "這代表天上哪一個星體？" },
-                    { id: "q1_1_03", topic: "基礎筆順與筆畫辨析", type: "stroke", targetChar: "水", questionText: "請觀察「<span class='highlight-word'>水</span>」字的筆順，並在下方畫布中跟著寫一次！", hint: "中間的豎勾要最先寫喔！", explanation: "筆順是：豎勾、橫撇、撇、捺。", audioScript: "請寫出水字。" },
-                    { id: "q1_1_04", topic: "簡單量詞及疊字認知", type: "mcq", questionText: "桌子上放著一<span class='highlight-word'>____</span>紅紅的蘋果。", options: ["隻", "個", "條", "本"], correctAnswer: 1, hint: "形容單獨的圓形水果。", explanation: "「個」是最常用的量詞。", audioScript: "桌子上放著一什麼紅紅的蘋果？" }
+                    {
+                        id: "q1_1_01",
+                        topic: "【部件拆解與象形認知】部首部件拆解",
+                        type: "mcq",
+                        questionText: "請看看「<span class='highlight-word'>江</span>」、「<span class='highlight-word'>河</span>」、「<span class='highlight-word'>湖</span>」這三個字，它們都有什麼共同的部首？",
+                        options: ["氵 (三點水)", "木 (木字旁)", "艹 (草字頭)", "扌 (提手旁)"],
+                        correctAnswer: 0,
+                        hint: "這些字都和「水」有關喔！",
+                        explanation: "「氵」代表水流，帶有這個部首的字通常與水有關。",
+                        audioScript: "江、河、湖這三個字，都有什麼共同的部首？"
+                    },
+                    {
+                        id: "q1_1_02",
+                        topic: "【部件拆解與象形認知】象形/指事文字配對",
+                        type: "mcq",
+                        questionText: "古代的字寫作一個圓圈，中間有一點 (☉)，這代表天上哪一個星體？",
+                        options: ["月亮", "太陽", "星星", "雲朵"],
+                        correctAnswer: 1,
+                        hint: "它白天出現，會發光發熱。",
+                        explanation: "這是「日」的象形字，圓圈代表太陽，中間的點代表太陽的實體。",
+                        audioScript: "古代的字寫作一個圓圈，中間有一點，這代表天上哪一個星體？"
+                    },
+                    {
+                        id: "q1_1_03",
+                        topic: "【部件拆解與象形認知】基礎筆順與筆畫辨析",
+                        type: "mcq",
+                        questionText: "寫「<span class='highlight-word'>山</span>」字時，第一筆應該寫什麼？",
+                        options: ["左邊的短豎", "中間的長豎", "右邊的短豎", "底部的橫"],
+                        correctAnswer: 1,
+                        hint: "寫「山」字要先寫最高的那座山峰喔！",
+                        explanation: "「山」字的正確筆順是先寫中間的長豎，再寫豎折，最後寫右邊的短豎。",
+                        audioScript: "寫山字時，第一筆應該寫什麼？"
+                    },
+                    {
+                        id: "q1_1_04",
+                        topic: "【部件拆解與象形認知】簡單量詞及疊字認知",
+                        type: "mcq",
+                        questionText: "妹妹的臉蛋長得<span class='highlight-word'>____</span>的，笑起來十分可愛。",
+                        options: ["高高", "長長", "胖胖", "瘦瘦"],
+                        correctAnswer: 2,
+                        hint: "形容小孩子臉頰圓潤肉肉的樣子。",
+                        explanation: "「胖胖」形容人圓潤可愛。疊字能讓描寫更加生動！",
+                        audioScript: "妹妹的臉蛋長得什麼樣的，笑起來十分可愛？"
+                    }
                 ],
                 "level_2": [
-                    { id: "q1_2_01", topic: "同音與形近字辨析", type: "mcq", questionText: "這座大樓已經（　）工了。", options: ["竣", "峻", "俊", "駿"], correctAnswer: 0, hint: "表示工程完畢。", explanation: "「竣工」代表工程完成。", audioScript: "這座大樓已經什麼工了？" },
-                    { id: "q1_2_02", topic: "錯別字修正", type: "mcq", questionText: "這本書的內<span class='highlight-word'>客</span>十分豐富。(請找出正確的字)", options: ["容", "各", "答", "格"], correctAnswer: 0, hint: "裝在裡面的事物。", explanation: "應為「內容」。", audioScript: "請找出正確的字。" },
-                    { id: "q1_2_03", topic: "近反義詞替換", type: "mcq", questionText: "「陡峭」的反義詞是？", options: ["險峻", "平坦", "高大", "崎嶇"], correctAnswer: 1, hint: "不斜的、好走的路。", explanation: "平坦是陡峭的反義詞。", audioScript: "陡峭的反義詞是什麼？" },
-                    { id: "q1_2_04", topic: "詞義理解與基礎成語", type: "mcq", questionText: "大家聽到這個好消息，都高興得<span class='highlight-word'>____</span>。", options: ["愁眉苦臉", "手舞足蹈", "怒氣沖沖", "依依不捨"], correctAnswer: 1, hint: "高興到手和腳都動起來了！", explanation: "手舞足蹈形容非常高興。", audioScript: "大家高興得什麼？" }
+                    {
+                        id: "q1_2_01",
+                        topic: "【語境辨析與詞彙固化】同音/形近字辨析",
+                        type: "mcq",
+                        questionText: "請選出正確的字填空：這座大樓已經（　）工了。",
+                        options: ["竣", "峻", "俊", "駿"],
+                        correctAnswer: 0,
+                        hint: "表示工程完畢，部首和「站立」有關 (立部)。",
+                        explanation: "「竣工」代表工程完成。「峻」是險峻，「俊」是英俊，「駿」是駿馬。",
+                        audioScript: "這座大樓已經什麼工了？"
+                    },
+                    {
+                        id: "q1_2_02",
+                        topic: "【語境辨析與詞彙固化】錯別字修正",
+                        type: "mcq",
+                        questionText: "「這本書的內<span class='highlight-word'>客</span>十分豐富。」句子中有一個錯別字，正確的字應該是？",
+                        options: ["格", "容", "各", "答"],
+                        correctAnswer: 1,
+                        hint: "是裝在裡面的東西，部首是「宀」(寶蓋頭)。",
+                        explanation: "正確詞語為「內容」，表示事物內部所包含的實質或意義。",
+                        audioScript: "這本書的內客十分豐富。正確的字應該是什麼？"
+                    },
+                    {
+                        id: "q1_2_03",
+                        topic: "【語境辨析與詞彙固化】近/反義詞替換",
+                        type: "mcq",
+                        questionText: "「這條山路非常 <span class='highlight-word'>陡峭</span>。」句中「陡峭」的反義詞是？",
+                        options: ["險峻", "平坦", "高大", "崎嶇"],
+                        correctAnswer: 1,
+                        hint: "反義詞就是意思相反的詞，不斜的、好走的路叫什麼？",
+                        explanation: "「平坦」是「陡峭」的反義詞。",
+                        audioScript: "陡峭的反義詞是什麼？"
+                    },
+                    {
+                        id: "q1_2_04",
+                        topic: "【語境辨析與詞彙固化】詞義理解與基礎成語填空",
+                        type: "mcq",
+                        questionText: "大家聽到這個好消息，都高興得<span class='highlight-word'>____</span>。",
+                        options: ["愁眉苦臉", "手舞足蹈", "怒氣沖沖", "依依不捨"],
+                        correctAnswer: 1,
+                        hint: "高興到手和腳都忍不住動起來了！",
+                        explanation: "「手舞足蹈」形容非常高興、興奮的樣子。",
+                        audioScript: "大家聽到這個好消息，都高興得什麼？"
+                    }
                 ],
                 "level_3": [
-                    { id: "q1_3_01", topic: "成語歸類與褒貶色彩", type: "mcq", questionText: "下列哪一個成語帶有「<span class='highlight-word'>貶義</span>」？", options: ["見義勇為", "捨己為人", "見風使舵", "守望相助"], correctAnswer: 2, hint: "形容沒原則，跟著風向改變。", explanation: "見風使舵是貶義詞。", audioScript: "哪個成語有貶義？" },
-                    { id: "q1_3_02", topic: "歇後語與諺語配對", type: "mcq", questionText: "「啞巴吃黃連」的下一句是？", options: ["有苦說不出", "一清二楚", "多此一舉", "一場空"], correctAnswer: 0, hint: "黃連非常苦。", explanation: "歇後語：啞巴吃黃連——有苦說不出。", audioScript: "啞巴吃黃連的下一句是什麼？" },
-                    { id: "q1_3_03", topic: "成語故事寓意", type: "mcq", questionText: "「<span class='highlight-word'>畫蛇添足</span>」的寓意是？", options: ["做事非常完美", "多此一舉弄巧成拙", "繪畫技術高超", "做事速度很快"], correctAnswer: 1, hint: "蛇本來沒有腳。", explanation: "比喻做多餘的事。", audioScript: "畫蛇添足的寓意是什麼？" },
-                    { id: "q1_3_04", topic: "文言基礎單字解釋", type: "mcq", questionText: "在古文中，「<span class='highlight-word'>汝</span>」通常代表什麼意思？", options: ["我", "你", "他", "我們"], correctAnswer: 1, hint: "古代稱呼對方的字。", explanation: "「汝」意思是「你」。", audioScript: "汝通常代表什麼意思？" }
+                    {
+                        id: "q1_3_01",
+                        topic: "【深度語感與成語遷移】成語歸類與褒貶色彩辨析",
+                        type: "mcq",
+                        questionText: "下列哪一個成語帶有「<span class='highlight-word'>貶義</span>」(用來批評別人)？",
+                        options: ["見義勇為", "守望相助", "見風使舵", "捨己為人"],
+                        correctAnswer: 2,
+                        hint: "哪一個行為是形容人沒有原則，跟著風向改變態度的？",
+                        explanation: "「見風使舵」比喻看勢頭行事，缺乏原則，是貶義詞。",
+                        audioScript: "下列哪一個成語帶有貶義？"
+                    },
+                    {
+                        id: "q1_3_02",
+                        topic: "【深度語感與成語遷移】歇後語/諺語情境配對",
+                        type: "mcq",
+                        questionText: "小明被誤會了卻無法解釋，這真是「啞巴吃黃連——<span class='highlight-word'>____</span>」。",
+                        options: ["有苦說不出", "一清二楚", "多此一舉", "一場空"],
+                        correctAnswer: 0,
+                        hint: "黃連非常苦，啞巴吃下去卻無法說話表達。",
+                        explanation: "歇後語「啞巴吃黃連——有苦說不出」形容有委屈卻無法辯解的處境。",
+                        audioScript: "啞巴吃黃連的下一句是什麼？"
+                    },
+                    {
+                        id: "q1_3_03",
+                        topic: "【深度語感與成語遷移】成語故事寓意配對",
+                        type: "mcq",
+                        questionText: "「<span class='highlight-word'>畫蛇添足</span>」這個成語的寓意是？",
+                        options: ["比喻做事非常完美", "比喻多此一舉，反而弄巧成拙", "比喻繪畫技術高超", "比喻做事速度很快"],
+                        correctAnswer: 1,
+                        hint: "蛇本來沒有腳，幫牠畫上腳是不是多餘的？",
+                        explanation: "畫蛇添足比喻做多餘的事，反而不恰當。",
+                        audioScript: "畫蛇添足這個成語的寓意是什麼？"
+                    },
+                    {
+                        id: "q1_3_04",
+                        topic: "【深度語感與成語遷移】文言基礎單字解釋",
+                        type: "mcq",
+                        questionText: "在文言文中，「<span class='highlight-word'>汝</span>」通常代表什麼意思？",
+                        options: ["我", "你", "他", "我們"],
+                        correctAnswer: 1,
+                        hint: "古代人稱呼對方常用的字。",
+                        explanation: "「汝」在文言文中是第二人稱代詞，意思是「你」。",
+                        audioScript: "在古文中，汝通常代表什麼意思？"
+                    }
                 ]
             },
-            
-            // ================== 第 2 範疇：句子與語法 ==================
             "domain_2": {
                 "level_1": [
-                    { id: "q2_1_01", topic: "實詞分類辨識", type: "mcq", questionText: "下列哪一個詞語是「<span class='highlight-word'>動詞</span>」(動作)？", options: ["蘋果", "美麗", "奔跑", "紅色"], correctAnswer: 2, hint: "可以做出來的動作。", explanation: "奔跑是動詞。", audioScript: "哪個詞語是動詞？" },
-                    { id: "q2_1_02", topic: "詞語排排坐 (重組)", type: "mcq", questionText: "重組句子：(1)在天上 (2)小鳥 (3)飛翔", options: ["1-2-3", "2-1-3", "3-2-1", "1-3-2"], correctAnswer: 1, hint: "誰 + 在哪裡 + 動作。", explanation: "小鳥在天上飛翔。", audioScript: "請重組句子。" },
-                    { id: "q2_1_03", topic: "填入主謂賓", type: "mcq", questionText: "「貓咪在沙發上____。」", options: ["牛奶", "睡覺", "漂亮", "非常"], correctAnswer: 1, hint: "填入一個動作。", explanation: "睡覺是動詞作謂語。", audioScript: "貓咪在沙發上做什麼？" },
-                    { id: "q2_1_04", topic: "基礎擴充句子", type: "mcq", questionText: "為「妹妹唱歌」擴充，哪個最生動？", options: ["妹妹唱歌了。", "妹妹在唱歌。", "可愛的妹妹在台上大聲唱歌。", "妹妹和唱歌。"], correctAnswer: 2, hint: "加入形容詞、地點。", explanation: "加入了豐富的細節。", audioScript: "哪個擴充句子最生動？" },
-                    { id: "q2_1_05", topic: "句型辨識", type: "mcq", questionText: "「這朵花真是太美麗了！」是什麼句型？", options: ["陳述句", "疑問句", "感嘆句", "祈使句"], correctAnswer: 2, hint: "句子後面有驚嘆號。", explanation: "表達強烈情感是感嘆句。", audioScript: "這是一個什麼句型？" }
+                    {
+                        id: "q2_1_01",
+                        topic: "【句子骨架建設】實詞分類",
+                        type: "mcq",
+                        questionText: "下列哪一個詞語是「<span class='highlight-word'>動詞</span>」(表示動作的詞)？",
+                        options: ["蘋果", "美麗", "奔跑", "紅色"],
+                        correctAnswer: 2,
+                        hint: "哪一個是可以做出來的動作？",
+                        explanation: "「奔跑」表示動作，是動詞。蘋果是名詞，美麗和紅色是形容詞。",
+                        audioScript: "下列哪一個詞語是動詞？"
+                    },
+                    {
+                        id: "q2_1_02",
+                        topic: "【句子骨架建設】詞語排排坐 (重組句子)",
+                        type: "mcq",
+                        questionText: "請選出正確的句子順序：<br>(1)在天上 (2)小鳥 (3)飛翔",
+                        options: ["(1)(2)(3)", "(2)(1)(3)", "(3)(2)(1)", "(1)(3)(2)"],
+                        correctAnswer: 1,
+                        hint: "先說「誰 (主語)」，再說「在哪裡做什麼」。",
+                        explanation: "正確順序是：小鳥(2) 在天上(1) 飛翔(3)。",
+                        audioScript: "請選出正確的句子順序。"
+                    },
+                    {
+                        id: "q2_1_03",
+                        topic: "【句子骨架建設】填入主謂賓 (句子完整性)",
+                        type: "mcq",
+                        questionText: "「貓咪在沙發上____。」請填入合適的謂語(動作)讓句子完整。",
+                        options: ["牛奶", "睡覺", "漂亮", "非常"],
+                        correctAnswer: 1,
+                        hint: "貓咪在沙發上會做什麼動作呢？",
+                        explanation: "「睡覺」是動詞作謂語，讓這句話有完整的意思。",
+                        audioScript: "貓咪在沙發上做什麼？請填入合適的詞語。"
+                    },
+                    {
+                        id: "q2_1_04",
+                        topic: "【句子骨架建設】基礎擴充句子",
+                        type: "mcq",
+                        questionText: "為「妹妹唱歌」擴充句子，哪一個最生動詳細？",
+                        options: ["妹妹唱歌了。", "妹妹在唱歌。", "可愛的妹妹在台上大聲唱歌。", "妹妹和唱歌。"],
+                        correctAnswer: 2,
+                        hint: "加入形容詞、地點和狀態，可以讓句子變長變豐富。",
+                        explanation: "加入「可愛的」、「在台上」、「大聲」擴充了句子的細節。",
+                        audioScript: "哪一個擴充後的句子最生動詳細？"
+                    },
+                    {
+                        id: "q2_1_05",
+                        topic: "【句子骨架建設】句型辨識",
+                        type: "mcq",
+                        questionText: "「這朵花真是太美麗了！」這是一個什麼句型？",
+                        options: ["陳述句", "疑問句", "感嘆句", "祈使句"],
+                        correctAnswer: 2,
+                        hint: "句子後面有驚嘆號「！」，表達強烈的情感。",
+                        explanation: "表達強烈讚嘆、驚訝情感的句子，並以感嘆號結尾，是感嘆句。",
+                        audioScript: "這朵花真是太美麗了！這是一個什麼句型？"
+                    }
                 ],
                 "level_2": [
-                    { id: "q2_2_01", topic: "虛詞應用 (的地得)", type: "mcq", questionText: "他跑<span class='highlight-word'>____</span>非常快。應填入？", options: ["的", "地", "得", "底"], correctAnswer: 2, hint: "動詞後面接形容狀態的詞。", explanation: "動詞後用「得」。", audioScript: "應填入哪一個字？" },
-                    { id: "q2_2_02", topic: "把/被字句轉換", type: "mcq", questionText: "「貓吃了魚」改寫為被字句是？", options: ["魚把貓吃了", "魚被貓吃了", "貓被魚吃了", "貓把魚吃了"], correctAnswer: 1, hint: "誰是被吃的？", explanation: "魚是被吃的對象。", audioScript: "改寫為被字句。" },
-                    { id: "q2_2_03", topic: "反問/陳述轉換", type: "mcq", questionText: "「難道我們不該保護環境嗎？」意思是：", options: ["不應該保護", "應該保護", "環境保護我們", "太難了"], correctAnswer: 1, hint: "反問表示強烈的肯定。", explanation: "意思是我們應該保護環境。", audioScript: "這句話的意思是什麼？" },
-                    { id: "q2_2_04", topic: "基礎關聯詞", type: "mcq", questionText: "「<span class='highlight-word'>____</span>明天下雨，我們<span class='highlight-word'>____</span>取消野餐。」", options: ["雖然...但是", "因為...所以", "如果...就", "不但...而且"], correctAnswer: 2, hint: "這是一種假設狀況。", explanation: "假設複句用如果...就。", audioScript: "該填入哪組關聯詞？" },
-                    { id: "q2_2_05", topic: "找出句子主幹", type: "mcq", questionText: "「活潑的小鳥在天空中飛翔。」的主幹是？", options: ["小鳥在天空", "小鳥飛翔", "可愛的小鳥", "天空飛翔"], correctAnswer: 1, hint: "刪去所有形容詞。", explanation: "主幹是主語+謂語。", audioScript: "這句話的主幹是什麼？" }
+                    {
+                        id: "q2_2_01",
+                        topic: "【句式轉換與功能應用】虛詞應用",
+                        type: "mcq",
+                        questionText: "他跑<span class='highlight-word'>____</span>非常快。應填入哪一個字？",
+                        options: ["的", "地", "得", "底"],
+                        correctAnswer: 2,
+                        hint: "動詞（跑）後面接形容狀態的詞，要用雙人「得」。",
+                        explanation: "動詞後面連接補充說明的狀態詞，應使用「得」。",
+                        audioScript: "他跑得非常快，應填入哪一個字？"
+                    },
+                    {
+                        id: "q2_2_02",
+                        topic: "【句式轉換與功能應用】把/被字句轉換",
+                        type: "mcq",
+                        questionText: "將「貓吃了魚」改寫為「<span class='highlight-word'>被</span>」字句，正確的是？",
+                        options: ["魚把貓吃了", "魚被貓吃了", "貓被魚吃了", "貓把魚吃了"],
+                        correctAnswer: 1,
+                        hint: "誰是「被」吃的受害者？把它放在句子最前面。",
+                        explanation: "魚是受事者，所以是「魚被貓吃了」。",
+                        audioScript: "將貓吃了魚改寫為被字句，正確的是哪個？"
+                    },
+                    {
+                        id: "q2_2_03",
+                        topic: "【句式轉換與功能應用】反問/陳述轉換",
+                        type: "mcq",
+                        questionText: "「難道我們不應該保護環境嗎？」轉換為陳述句，意思是：",
+                        options: ["我們不應該保護環境。", "我們應該保護環境。", "環境保護我們嗎？", "保護環境太難了。"],
+                        correctAnswer: 1,
+                        hint: "反問句通常是「用疑問的語氣，表達肯定的意思」。",
+                        explanation: "反問語氣「難道不...嗎？」代表強烈的肯定，即「我們應該保護環境」。",
+                        audioScript: "難道我們不應該保護環境嗎？這句話的意思是什麼？"
+                    },
+                    {
+                        id: "q2_2_04",
+                        topic: "【句式轉換與功能應用】基礎關聯詞填充",
+                        type: "mcq",
+                        questionText: "「<span class='highlight-word'>____</span>明天下雨，我們<span class='highlight-word'>____</span>取消野餐。」",
+                        options: ["雖然...但是...", "因為...所以...", "如果...就...", "不但...而且..."],
+                        correctAnswer: 2,
+                        hint: "明天還沒到，下雨是一種「假設」的狀況。",
+                        explanation: "這是一個假設複句，使用「如果...就...」最合適。",
+                        audioScript: "什麼明天下雨，我們什麼取消野餐。該填入哪組關聯詞？"
+                    },
+                    {
+                        id: "q2_2_05",
+                        topic: "【句式轉換與功能應用】找出句子主幹",
+                        type: "mcq",
+                        questionText: "縮句：「活潑可愛的小鳥在蔚藍的天空中自由地飛翔。」最精簡的主幹是？",
+                        options: ["小鳥在天空。", "小鳥飛翔。", "可愛的小鳥飛翔。", "天空飛翔。"],
+                        correctAnswer: 1,
+                        hint: "刪去所有形容詞(的)和副詞(地)，只保留「誰」做「什麼」。",
+                        explanation: "主語是「小鳥」，謂語是「飛翔」。",
+                        audioScript: "將這句話縮到最簡，主幹是什麼？"
+                    }
                 ],
                 "level_3": [
-                    { id: "q2_3_01", topic: "複雜複句辨析", type: "mcq", questionText: "「<span class='highlight-word'>只要</span>堅持，<span class='highlight-word'>就</span>能成功。」屬於什麼關係？", options: ["假設關係", "條件關係", "轉折關係", "因果關係"], correctAnswer: 1, hint: "「只要」是必備要素。", explanation: "屬於條件關係複句。", audioScript: "這屬於什麼關係的複句？" },
-                    { id: "q2_3_02", topic: "雙重否定句轉換", type: "mcq", questionText: "「我一定要去。」換成雙重否定句是：", options: ["我一定不去", "我不能不去", "我不一定去", "我不去嗎"], correctAnswer: 1, hint: "用兩個否定詞表示肯定。", explanation: "不+能不 = 肯定去。", audioScript: "換成雙重否定句是哪個？" },
-                    { id: "q2_3_03", topic: "病句診斷", type: "mcq", questionText: "「我大約肯定他會來。」犯了什麼語病？", options: ["成分殘缺", "搭配不當", "前後矛盾", "語序顛倒"], correctAnswer: 2, hint: "大約和肯定意思相反。", explanation: "前後矛盾。", audioScript: "這句話犯了什麼語病？" },
-                    { id: "q2_3_04", topic: "引語轉換", type: "mcq", questionText: "小明說：「我明天去。」改為間接敘述是？", options: ["小明說：他明天去。", "小明說，他明天去。", "小明說，我明天去。", "他說小明明天去。"], correctAnswer: 1, hint: "去掉冒號引號，把『我』改『他』。", explanation: "間接敘述不用引號。", audioScript: "改為間接敘述正確的是？" }
+                    {
+                        id: "q2_3_01",
+                        topic: "【複雜語法與複句診斷】複雜複句辨析",
+                        type: "mcq",
+                        questionText: "「<span class='highlight-word'>只要</span>堅持不懈，<span class='highlight-word'>就</span>能取得成功。」這屬於什麼關係的複句？",
+                        options: ["假設關係", "條件關係", "轉折關係", "因果關係"],
+                        correctAnswer: 1,
+                        hint: "「只要」是達成某件事的必備要素。",
+                        explanation: "「只要...就...」表示充足的條件，屬於條件關係複句。",
+                        audioScript: "只要堅持不懈，就能取得成功。這屬於什麼關係的複句？"
+                    },
+                    {
+                        id: "q2_3_02",
+                        topic: "【複雜語法與複句診斷】雙重否定句轉換",
+                        type: "mcq",
+                        questionText: "「我一定要去。」換成雙重否定句，意思不變的是：",
+                        options: ["我一定不去。", "我不能不去。", "我不一定去。", "難道我不去嗎？"],
+                        correctAnswer: 1,
+                        hint: "用兩個否定詞（不、非、無）疊加，表示更強烈的肯定。",
+                        explanation: "「不」和「能不」雙重否定表示肯定，語氣比原句更強。",
+                        audioScript: "我一定要去。換成雙重否定句是哪一個？"
+                    },
+                    {
+                        id: "q2_3_03",
+                        topic: "【複雜語法與複句診斷】病句診斷",
+                        type: "mcq",
+                        questionText: "「我大約肯定他明天會來。」這句話犯了什麼語病？",
+                        options: ["成分殘缺", "搭配不當", "前後矛盾", "語序顛倒"],
+                        correctAnswer: 2,
+                        hint: "「大約」是不確定，「肯定」是確定，兩個詞放在一起怪怪的。",
+                        explanation: "「大約」表猜測，「肯定」表確定，兩者同時使用造成前後矛盾。",
+                        audioScript: "我大約肯定他明天會來。這句話犯了什麼語病？"
+                    },
+                    {
+                        id: "q2_3_04",
+                        topic: "【複雜語法與複句診斷】引語轉換",
+                        type: "mcq",
+                        questionText: "直接敘述：「小明說：『我明天要去圖書館。』」改為間接敘述正確的是？",
+                        options: ["小明說：他明天要去圖書館。", "小明說，他明天要去圖書館。", "小明說，我明天要去圖書館。", "他說，小明明天要去圖書館。"],
+                        correctAnswer: 1,
+                        hint: "去掉冒號和引號，並把代名詞「我」改成「他」。",
+                        explanation: "間接敘述不用引號，且人稱「我」要轉換成第三人稱「他」。",
+                        audioScript: "將小明說我明天要去圖書館改為間接敘述。"
+                    }
                 ]
             },
-
-            // ================== 第 3 範疇：修辭與標點 ==================
             "domain_3": {
                 "level_1": [
-                    { id: "q3_1_01", topic: "基礎標點", type: "mcq", questionText: "「蘋果<span class='highlight-word'>____</span>香蕉和橙子。」應填入？", options: ["。", "，", "、", "！"], correctAnswer: 2, hint: "並列的水果名稱。", explanation: "並列名詞用頓號。", audioScript: "應填入什麼標點？" },
-                    { id: "q3_1_02", topic: "比喻/擬人辨識", type: "mcq", questionText: "「星星在眨眼睛。」用了什麼修辭？", options: ["比喻", "擬人", "排比", "誇張"], correctAnswer: 1, hint: "星星像人一樣。", explanation: "賦予人的動作是擬人。", audioScript: "這用了什麼修辭？" }
+                    {
+                        id: "q3_1_01",
+                        topic: "【感官與標點初探】基礎標點",
+                        type: "mcq",
+                        questionText: "「媽媽買了蘋果<span class='highlight-word'>____</span>香蕉和橙子。」應填入什麼標點？",
+                        options: ["。", "，", "、", "！"],
+                        correctAnswer: 2,
+                        hint: "連接並列的詞語(水果名稱)，要用像水滴一樣的符號。",
+                        explanation: "並列的名詞之間應使用頓號「、」。",
+                        audioScript: "媽媽買了蘋果、香蕉和橙子。中間應填入什麼標點？"
+                    },
+                    {
+                        id: "q3_1_02",
+                        topic: "【感官與標點初探】比喻/擬人辨識",
+                        type: "mcq",
+                        questionText: "「星星在夜空中向我們眨眼睛。」這運用了什麼修辭手法？",
+                        options: ["比喻", "擬人", "排比", "誇張"],
+                        correctAnswer: 1,
+                        hint: "星星本來不會眨眼睛，把它當作「人」來寫了。",
+                        explanation: "賦予無生命事物人類的動作或感情，屬於擬人法。",
+                        audioScript: "星星在夜空中向我們眨眼睛。這運用了什麼修辭手法？"
+                    },
+                    {
+                        id: "q3_1_03",
+                        topic: "【感官與標點初探】圖文配對修辭",
+                        type: "mcq",
+                        questionText: "如果看到一張「臉紅得像一顆熟透的番茄」的圖片，這屬於什麼修辭？",
+                        options: ["比喻 (明喻)", "擬人", "排比", "借代"],
+                        correctAnswer: 0,
+                        hint: "句子裡有「像」這個字，把臉比作番茄。",
+                        explanation: "出現了喻體(番茄)和喻詞(像)，這是標準的明喻。",
+                        audioScript: "臉紅得像一顆熟透的番茄。這屬於什麼修辭？"
+                    }
                 ],
                 "level_2": [
-                    { id: "q3_2_01", topic: "進階標點", type: "mcq", questionText: "標示書名《哈利波特》應使用？", options: ["引號", "括號", "書名號", "破折號"], correctAnswer: 2, hint: "像兩層箭頭的符號。", explanation: "書名必須使用書名號《》。", audioScript: "標示書名應使用什麼？" },
-                    { id: "q3_2_02", topic: "排比/誇張應用", type: "mcq", questionText: "「安靜得連針掉在地上都聽得見。」是？", options: ["對比", "排比", "誇張", "設問"], correctAnswer: 2, hint: "刻意放大了安靜的程度。", explanation: "言過其實屬於誇張法。", audioScript: "這是什麼修辭？" }
+                    {
+                        id: "q3_2_01",
+                        topic: "【修辭視覺化進階工具與色彩】進階標點",
+                        type: "mcq",
+                        questionText: "想要標示一本書的書名《哈利波特》，應該使用哪種標點符號？",
+                        options: ["引號「」", "括號 ()", "書名號《》", "破折號 ——"],
+                        correctAnswer: 2,
+                        hint: "它的形狀像兩層箭頭，專門用來包住書名或電影名。",
+                        explanation: "書名、篇名、報紙名等皆須使用書名號《》。 ",
+                        audioScript: "標示書名應該使用哪種標點符號？"
+                    },
+                    {
+                        id: "q3_2_02",
+                        topic: "【修辭視覺化進階工具與色彩】排比/誇張/對比應用",
+                        type: "mcq",
+                        questionText: "「課室裡安靜得連一根針掉在地上的聲音都聽得見。」這運用了什麼修辭？",
+                        options: ["對比", "排比", "誇張", "設問"],
+                        correctAnswer: 2,
+                        hint: "針掉在地上聲音其實很難聽見，這裡刻意放大了安靜的程度。",
+                        explanation: "故意言過其實，放大特徵，屬於誇張法。",
+                        audioScript: "這句話運用了什麼修辭？"
+                    },
+                    {
+                        id: "q3_2_03",
+                        topic: "【修辭視覺化進階工具與色彩】修辭改寫句子",
+                        type: "mcq",
+                        questionText: "將「風吹過樹葉發出聲音」改寫為<span class='highlight-word'>擬人句</span>，最好的是？",
+                        options: ["風吹過樹葉，沙沙作響。", "風像一頭野獸吹過樹林。", "風兒在樹葉間輕輕唱歌。", "風吹得樹葉滿天飛。"],
+                        correctAnswer: 2,
+                        hint: "必須要有「人」才會做的動作。",
+                        explanation: "「唱歌」是人的動作，賦予風生命，使句子更生動優美。",
+                        audioScript: "將風吹過樹葉發出聲音改寫為擬人句，最好的是哪個？"
+                    }
                 ],
                 "level_3": [
-                    { id: "q3_3_01", topic: "綜合修辭與設問", type: "mcq", questionText: "「什麼是快樂？快樂就是助人。」這叫？", options: ["反問", "設問", "借代", "對偶"], correctAnswer: 1, hint: "自問自答。", explanation: "無疑而問，自問自答是設問。", audioScript: "這種手法叫什麼？" },
-                    { id: "q3_3_02", topic: "特殊標點情感", type: "mcq", questionText: "「我……對不起你。」省略號代表？", options: ["話未說完", "聲音延長", "說話斷斷續續", "列舉省略"], correctAnswer: 2, hint: "在哭泣哽咽時的情境。", explanation: "表示說話斷斷續續。", audioScript: "省略號代表什麼？" }
+                    {
+                        id: "q3_3_01",
+                        topic: "【綜合賞析與仿作】綜合修辭與設問",
+                        type: "mcq",
+                        questionText: "「什麼是快樂？快樂就是幫助別人。」這種自問自答的手法叫什麼？",
+                        options: ["反問", "設問", "借代", "對偶"],
+                        correctAnswer: 1,
+                        hint: "為了引起注意，自己提出問題，然後馬上自己回答。",
+                        explanation: "無疑而問，自問自答，是設問修辭。",
+                        audioScript: "這種自問自答的手法叫什麼？"
+                    },
+                    {
+                        id: "q3_3_02",
+                        topic: "【綜合賞析與仿作】特殊標點深層情感",
+                        type: "mcq",
+                        questionText: "「他哽咽著說：『我……我對不起你。』」句中的省略號代表什麼？",
+                        options: ["話未說完", "聲音延長", "說話斷斷續續", "列舉省略"],
+                        correctAnswer: 2,
+                        hint: "「哽咽」代表哭著說話，氣接不上來。",
+                        explanation: "在哽咽的情境下，省略號表示說話吞吞吐吐、斷斷續續。",
+                        audioScript: "句中的省略號代表什麼？"
+                    },
+                    {
+                        id: "q3_3_03",
+                        topic: "【綜合賞析與仿作】語氣與修辭策略調整",
+                        type: "mcq",
+                        questionText: "演講時為了增強氣勢、讓觀眾有共鳴，最適宜大量加入哪種修辭？",
+                        options: ["排比", "借代", "擬物", "頂真"],
+                        correctAnswer: 0,
+                        hint: "三個或以上結構相似的句子連在一起，讀起來會很有節奏感和氣勢。",
+                        explanation: "排比句能增強語勢，表達強烈情感，非常適合演講辭。",
+                        audioScript: "演講時為了增強氣勢，最適宜大量加入哪種修辭？"
+                    }
                 ]
             },
-
-            // ================== 第 4 範疇：段落與實用文 (極致精細拆解) ==================
             "domain_4": {
                 "level_1": [
-                    { id: "q4_1_01", topic: "排句成段 (3-4句)", type: "mcq", questionText: "(1)然後刷牙 (2)先起床 (3)最後吃早餐。順序是？", options: ["1-2-3", "2-1-3", "3-2-1", "2-3-1"], correctAnswer: 1, hint: "注意先後順序詞。", explanation: "先起床，然後刷牙，最後吃早餐。", audioScript: "正確排序是什麼？" },
-                    { id: "q4_1_02", topic: "格式填空 - 便條", type: "mcq", questionText: "便條的第一行頂格，必須寫上什麼？", options: ["日期", "上款(收條人)", "下款(發條人)", "標題"], correctAnswer: 1, hint: "你要寫給誰？", explanation: "便條開頭必須先寫上款。", audioScript: "便條第一行寫什麼？" },
-                    { id: "q4_1_03", topic: "格式填空 - 日記", type: "mcq", questionText: "日記的第一行除了日期和星期，還要寫什麼？", options: ["天氣", "祝頌語", "上款", "標題"], correctAnswer: 0, hint: "記錄當天的環境狀況。", explanation: "日記首行必須有年、月、日、星期、天氣。", audioScript: "日記第一行還要寫什麼？" },
-                    { id: "q4_1_04", topic: "格式填空 - 邀請卡", type: "mcq", questionText: "邀請卡必須清楚列明日期、時間和<span class='highlight-word'>____</span>？", options: ["天氣", "地點", "郵票", "年齡"], correctAnswer: 1, hint: "客人才知道要去哪裡參加。", explanation: "活動地點是邀請卡必不可少的資訊。", audioScript: "邀請卡必須列明什麼？" },
-                    { id: "q4_1_05", topic: "時序過渡詞應用", type: "mcq", questionText: "做蛋糕：「<span class='highlight-word'>____</span>打發雞蛋，<span class='highlight-word'>____</span>加入麵粉。」", options: ["首先/接著", "因為/所以", "雖然/可是", "不但/而且"], correctAnswer: 0, hint: "表示步驟的先後。", explanation: "首先、接著是標準的時序詞。", audioScript: "該填入什麼詞？" }
+                    {
+                        id: "q4_1_01",
+                        topic: "【格式與時序】排句成段",
+                        type: "mcq",
+                        questionText: "(1)然後刷牙洗臉 (2)我早上六點起床 (3)最後出門上學。正確排序是？",
+                        options: ["1-2-3", "2-1-3", "3-2-1", "2-3-1"],
+                        correctAnswer: 1,
+                        hint: "找出動作的先後順序。",
+                        explanation: "依照時間順序：先起床，再刷牙，最後出門。",
+                        audioScript: "這三個句子的正確排序是什麼？"
+                    },
+                    {
+                        id: "q4_1_02",
+                        topic: "【格式與時序】實用文組件配對",
+                        type: "mcq",
+                        questionText: "便條中寫著「小明：」，這部分稱為什麼？",
+                        options: ["上款 (收條人)", "下款 (發條人)", "正文", "日期"],
+                        correctAnswer: 0,
+                        hint: "寫在最上面，代表這張紙條是要給誰看的。",
+                        explanation: "寫在頂格的稱呼是上款，表示接收訊息的對象。",
+                        audioScript: "便條中寫著小明這部分稱為什麼？"
+                    },
+                    {
+                        id: "q4_1_03",
+                        topic: "【格式與時序】基礎格式填空 (便條/日記)",
+                        type: "mcq",
+                        questionText: "寫「日記」時，第一行通常必須交代什麼資訊？",
+                        options: ["上款和下款", "年、月、日、星期和天氣", "祝頌語", "標題"],
+                        correctAnswer: 1,
+                        hint: "日記是記錄每天發生的事，所以要知道是哪一天的情況。",
+                        explanation: "日記首行必須記錄日期、星期與天氣，不需上下款。",
+                        audioScript: "寫日記時，第一行通常必須交代什麼資訊？"
+                    },
+                    {
+                        id: "q4_1_04",
+                        topic: "【格式與時序】時序過渡詞應用",
+                        type: "mcq",
+                        questionText: "做蛋糕的步驟：「<span class='highlight-word'>____</span>打發雞蛋，<span class='highlight-word'>____</span>加入麵粉，<span class='highlight-word'>____</span>放入烤箱。」",
+                        options: ["首先 / 接著 / 最後", "因為 / 所以 / 但是", "雖然 / 可是 / 不過", "不但 / 而且 / 還"],
+                        correctAnswer: 0,
+                        hint: "這是表示做事步驟先後順序的詞。",
+                        explanation: "「首先、接著、最後」是標準的時序過渡詞，使步驟清晰。",
+                        audioScript: "做蛋糕的步驟該填入什麼詞？"
+                    }
                 ],
                 "level_2": [
-                    { id: "q4_2_01", topic: "段落中心訊息提取", type: "mcq", questionText: "「獅子力氣大，跑得快，沒人敢惹。」中心思想是？", options: ["喜歡跑步", "草原危險", "獅子很強大", "動物膽小"], correctAnswer: 2, hint: "都在說明獅子的特點。", explanation: "段落重點在強調獅子的強悍。", audioScript: "這段話的中心思想是什麼？" },
-                    { id: "q4_2_02", topic: "格式辨析 - 書信", type: "mcq", questionText: "書信中，「祝身體健康」等祝頌語應該寫在哪裡？", options: ["上款旁邊", "信封上", "正文結束後", "日期下面"], correctAnswer: 2, hint: "信寫完後給予的祝福。", explanation: "祝頌語應寫在正文結束後。", audioScript: "祝頌語應該寫在哪裡？" },
-                    { id: "q4_2_03", topic: "格式辨析 - 通告", type: "mcq", questionText: "學校要發布下週放假的消息給全校，最適合用？", options: ["便條", "尋物啟事", "通告", "私人書信"], correctAnswer: 2, hint: "官方發布重要消息的文件。", explanation: "通告是機關學校用來公開告知事項的。", audioScript: "最適合使用哪種實用文？" },
-                    { id: "q4_2_04", topic: "格式辨析 - 海報宣傳", type: "mcq", questionText: "宣傳海報為了吸引路人目光，通常會具備什麼特色？", options: ["字數很多", "沒有圖畫", "簡短有力的口號", "寫上天氣"], correctAnswer: 2, hint: "要讓人一眼就記住。", explanation: "海報需要標題醒目、口號簡短有力。", audioScript: "宣傳海報通常具備什麼特色？" },
-                    { id: "q4_2_05", topic: "承上啟下句子選擇", type: "mcq", questionText: "上一段「海灘很美」，下一段「垃圾很多」。中間放哪句最好？", options: ["海裡有魚。", "可是這片海灘正面臨危機。", "大家喜歡玩水。", "污染不好。"], correctAnswer: 1, hint: "要能轉折語氣，連接美麗與垃圾。", explanation: "「可是...危機」成功轉折，承上啟下。", audioScript: "哪一句適合放在中間？" }
+                    {
+                        id: "q4_2_01",
+                        topic: "【中心與邏輯】排句成段",
+                        type: "mcq",
+                        questionText: "要寫一篇「種綠豆」的段落，哪一句應放在最前面作為「主題句」？",
+                        options: ["綠豆終於發芽了。", "今天，老師教我們種綠豆。", "我每天都給它 單。", "先把棉花弄濕。"],
+                        correctAnswer: 1,
+                        hint: "主題句通常要先交代這一段要講什麼大事情。",
+                        explanation: "「今天，老師教我們種綠豆。」交代了事件起因，適合作為開頭的主題句。",
+                        audioScript: "哪一句應放在最前面作為主題句？"
+                    },
+                    {
+                        id: "q4_2_02",
+                        topic: "【中心與邏輯】段落中心訊息提取",
+                        type: "mcq",
+                        questionText: "「獅子是非洲草原上的霸主，牠們力氣大，跑得快，沒有動物敢惹牠們。」這段話的中心是？",
+                        options: ["獅子很喜歡跑步", "非洲草原很危險", "獅子非常強大兇猛", "動物們很膽小"],
+                        correctAnswer: 2,
+                        hint: "「霸主」、「力氣大」、「沒有動物敢惹」都在說明獅子的什麼特點？",
+                        explanation: "段落重點在強調獅子的強悍與威猛。",
+                        audioScript: "這段話的中心思想是什麼？"
+                    },
+                    {
+                        id: "q4_2_03",
+                        topic: "【中心與邏輯】實用文格式 (通告/啟事)",
+                        type: "mcq",
+                        questionText: "學校要告訴全校家長下週放假，最適合使用哪一種實用文？",
+                        options: ["私人書信", "尋物啟事", "通告", "日記"],
+                        correctAnswer: 2,
+                        hint: "官方機構用來向大眾或特定群體發布重要消息的文件。",
+                        explanation: "通告是機關學校用來公開告知事項的公文。",
+                        audioScript: "學校要告訴全校家長下週放假，最適合使用哪一種實用文？"
+                    },
+                    {
+                        id: "q4_2_04",
+                        topic: "【中心與邏輯】實用文格式改錯",
+                        type: "mcq",
+                        questionText: "小明寫了一封書信，把「祝頌語」(如：祝身體健康) 寫在上款旁邊，這哪裡錯了？",
+                        options: ["祝頌語應該寫在信的結尾處。", "書信不需要寫祝頌語。", "祝頌語應該寫在信封上。", "沒有錯。"],
+                        correctAnswer: 0,
+                        hint: "祝福的話通常是在信快要寫完，準備署名前才說的。",
+                        explanation: "祝頌語屬於書信的結尾部分，應寫在正文結束後，下款之前。",
+                        audioScript: "祝頌語寫在上款旁邊哪裡錯了？"
+                    },
+                    {
+                        id: "q4_2_05",
+                        topic: "【中心與邏輯】承上啟下句子選擇",
+                        type: "mcq",
+                        questionText: "上一段寫「海洋很美麗」，下一段寫「海洋污染嚴重」。哪一句適合放在兩段中間承上啟下？",
+                        options: ["海洋裡有很多魚。", "可是，這片美麗的海洋正面臨危機。", "大家都很喜歡去海邊玩。", "污染會讓地球生病。"],
+                        correctAnswer: 1,
+                        hint: "要一句話同時提到前面的「美麗」，並引出後面的「危機/污染」。",
+                        explanation: "「可是，這片美麗的海洋正面臨危機」成功轉折，連接了前後段的意思。",
+                        audioScript: "哪一句適合放在兩段中間承上啟下？"
+                    }
                 ],
                 "level_3": [
-                    { id: "q4_3_01", topic: "敬謙詞應用", type: "mcq", questionText: "在對話中，稱呼「對方的父親」應該用哪一個尊稱？", options: ["家父", "令尊", "寒舍", "貴校"], correctAnswer: 1, hint: "用尊稱來稱呼別人的長輩。", explanation: "令尊是尊稱對方的父親；家父是稱呼自己的父親。", audioScript: "稱呼對方的父親應該用哪個詞？" },
-                    { id: "q4_3_02", topic: "進階實用文 - 演講辭", type: "mcq", questionText: "演講辭的開頭，第一件事必須做什麼？", options: ["馬上講故事", "稱呼在場的聽眾", "提出反問", "總結全文"], correctAnswer: 1, hint: "出於禮貌，要先向台下的人打招呼。", explanation: "演講辭開頭必須有稱呼語，展現禮貌。", audioScript: "演講辭的開頭必須做什麼？" },
-                    { id: "q4_3_03", topic: "複雜過渡詞與段落重組", type: "mcq", questionText: "「<span class='highlight-word'>總括而言</span>」這句過渡詞通常出現在文章的哪裡？", options: ["第一段開頭", "中間段落", "文章的最後一段", "標題"], correctAnswer: 2, hint: "這是一個用來做總結的詞。", explanation: "總結性的過渡詞多用於文章末段收結全文。", audioScript: "總括而言通常出現在哪裡？" }
+                    {
+                        id: "q4_3_01",
+                        topic: "【資訊轉化與銜接】敬謙詞應用",
+                        type: "mcq",
+                        questionText: "在對話中，稱呼「自己的家」應該用哪一個謙詞？",
+                        options: ["府上", "寒舍", "貴校", "貴寶號"],
+                        correctAnswer: 1,
+                        hint: "用謙虛的詞來形容自己的房子很簡陋。",
+                        explanation: "「寒舍」是謙稱自己的家；「府上」是尊稱對方的家。",
+                        audioScript: "稱呼自己的家應該用哪一個謙詞？"
+                    },
+                    {
+                        id: "q4_3_02",
+                        topic: "【資訊轉化與銜接】根據素材撰寫進階實用文",
+                        type: "mcq",
+                        questionText: "你要寫一篇「呼籲同學節約用水」的演講辭，開頭最合適的語氣是？",
+                        options: ["各位校長、老師、同學，大家好！今天我想談談...", "嗨，大家聽我說，不准浪費水！", "從前有一個人很喜歡浪費水...", "我不明白為什麼大家要浪費水。"],
+                        correctAnswer: 0,
+                        hint: "演講辭必須注意禮貌，並向現場的聽眾打招呼。",
+                        explanation: "演講辭開頭必須有稱呼語，展現禮貌並引出主題。",
+                        audioScript: "呼籲同學節約用水的演講辭，開頭最合適的語氣是？"
+                    },
+                    {
+                        id: "q4_3_03",
+                        topic: "【資訊轉化與銜接】複雜過渡詞與段落重組",
+                        type: "mcq",
+                        questionText: "「<span class='highlight-word'>總括而言</span>，閱讀好處多不勝數。」這句話通常會出現在文章的哪裡？",
+                        options: ["第一段開頭", "第二段結尾", "文章的最後一段", "文章的標題"],
+                        correctAnswer: 2,
+                        hint: "「總括而言」是總結的意思。",
+                        explanation: "總結性的過渡詞多用於文章末段，用來收結全文。",
+                        audioScript: "總括而言這句話通常會出現在文章的哪裡？"
+                    }
                 ]
             },
-
             // ================== 第 5 範疇：閱讀理解 ==================
             "domain_5": {
                 "level_1": [
-                    { id: "q5_1_01", topic: "5W1H 事實搜索", type: "mcq", questionText: "「昨天下午，小明在圖書館看書。」事件發生在何時？", options: ["小明", "圖書館", "昨天下午", "看書"], correctAnswer: 2, hint: "尋找表示時間的詞。", explanation: "時間是昨天下午。", audioScript: "事件發生在何時？" },
-                    { id: "q5_1_02", topic: "掃描式閱讀 (Scanning)", type: "mcq", questionText: "要快速在一篇文章中找出主角的生日，你應該尋找什麼字眼？", options: ["形容詞", "動詞", "數字或日期", "地點"], correctAnswer: 2, hint: "生日通常是用什麼表示的？", explanation: "掃描式閱讀旨在尋找特定資訊，如數字、日期。", audioScript: "找出主角生日應該尋找什麼字眼？" }
+                    {
+                        id: "q5_1_01",
+                        topic: "【事實提取：記憶與理解】5W1H 事實搜索",
+                        type: "mcq",
+                        questionText: "閱讀句子：「昨天下午，小明在圖書館看書。」請問事件發生在<span class='highlight-word'>何時</span>？",
+                        options: ["小明", "圖書館", "昨天下午", "看書"],
+                        correctAnswer: 2,
+                        hint: "尋找表示時間的詞語。",
+                        explanation: "「何時 (When)」問的是時間，句子中的時間是「昨天下午」。",
+                        audioScript: "請問事件發生在何時？"
+                    },
+                    {
+                        id: "q5_1_02",
+                        topic: "【事實提取：記憶與理解】文章與圖表資訊對應",
+                        type: "mcq",
+                        questionText: "根據時間表，上午 10:00 是數學課，下午 2:00 是體育課。小明在<span class='highlight-word'>上午 10:00</span> 應該帶什麼課本？",
+                        options: ["中文課本", "數學課本", "體育服", "英文課本"],
+                        correctAnswer: 1,
+                        hint: "對照時間「上午 10:00」旁邊寫的科目。",
+                        explanation: "圖表顯示上午 10:00 是數學課，所以要帶數學課本。",
+                        audioScript: "小明在上午十點應該帶什麼課本？"
+                    },
+                    {
+                        id: "q5_1_03",
+                        topic: "【事實提取：記憶與理解】拆段小步子提問",
+                        type: "mcq",
+                        questionText: "閱讀第一段：「小狗小白有一身雪白的毛。」這一段主要介紹小白的什麼？",
+                        options: ["叫聲", "外表", "食物", "朋友"],
+                        correctAnswer: 1,
+                        hint: "「雪白的毛」是我們用眼睛能看到的特徵。",
+                        explanation: "「雪白的毛」是在描寫小白的外觀。",
+                        audioScript: "這一段主要介紹小白的什麼？"
+                    },
+                    {
+                        id: "q5_1_04",
+                        topic: "【事實提取：記憶與理解】掃描式閱讀 (Scanning)",
+                        type: "mcq",
+                        questionText: "快速尋找：陳大文出生於 <span class='highlight-word'>2014年8月</span>。請問陳大文是哪一年出生的？",
+                        options: ["2012年", "2013年", "2014年", "2015年"],
+                        correctAnswer: 2,
+                        hint: "視線快速掃過數字的部分尋找年份。",
+                        explanation: "文中明確提到「2014年8月」。",
+                        audioScript: "請問陳大文是哪一年出生的？"
+                    }
                 ],
                 "level_2": [
-                    { id: "q5_2_01", topic: "詞義推斷", type: "mcq", questionText: "「他氣得『七竅生煙』。」猜測七竅生煙的意思？", options: ["生病了", "非常生氣", "正在抽菸", "覺得很熱"], correctAnswer: 1, hint: "前面說「氣得」。", explanation: "形容氣憤到了極點。", audioScript: "七竅生煙是什麼意思？" },
-                    { id: "q5_2_02", topic: "人物性格歸納", type: "mcq", questionText: "小華每天主動幫媽媽做家務，可見他是一個怎樣的孩子？", options: ["孝順勤勞", "聰明機智", "勇敢果斷", "幽默風趣"], correctAnswer: 0, hint: "幫忙做家務代表他不怕辛苦，也很愛媽媽。", explanation: "主動分擔家務是勤勞和孝順的表現。", audioScript: "小華是個怎樣的孩子？" }
+                    {
+                        id: "q5_2_01",
+                        topic: "【推論分析：應用與關聯】詞義推斷與代名詞指代",
+                        type: "mcq",
+                        questionText: "「小明把蘋果送給小紅，<span class='highlight-word'>她</span>開心地笑了。」句中的「她」是指誰？",
+                        options: ["小明", "蘋果", "小紅", "不確定"],
+                        correctAnswer: 2,
+                        hint: "「她」是女部的，而且是接受蘋果後會開心的人。",
+                        explanation: "代名詞「她」指代前文剛提到過的女性人物「小紅」。",
+                        audioScript: "句中的她是指誰？"
+                    },
+                    {
+                        id: "q5_2_02",
+                        topic: "【推論分析：應用與關聯】人物性格與事件起因歸納",
+                        type: "mcq",
+                        questionText: "小明看到同學跌倒，立刻跑過去扶他起來。可以看出小明是個怎樣的人？",
+                        options: ["膽小怕事", "樂於助人", "聰明機智", "驕傲自大"],
+                        correctAnswer: 1,
+                        hint: "幫助跌倒的同學，是很有愛心的行為。",
+                        explanation: "主動幫助遇到困難的同學，體現了「樂於助人」的性格。",
+                        audioScript: "可以看出小明是個怎樣的人？"
+                    },
+                    {
+                        id: "q5_2_03",
+                        topic: "【推論分析：應用與關聯】文章主旨初步歸納",
+                        type: "mcq",
+                        questionText: "一篇文章主要寫小樹苗努力吸收水分，最後長成大樹。文章的主旨是？",
+                        options: ["樹木需要喝水", "只要努力堅持就能成功", "天氣很好", "種樹很辛苦"],
+                        correctAnswer: 1,
+                        hint: "從小樹苗長成大樹，背後蘊含了什麼努力的精神？",
+                        explanation: "透過小樹苗的成長，帶出努力堅持終會成功的道理。",
+                        audioScript: "這篇文章的主旨是什麼？"
+                    },
+                    {
+                        id: "q5_2_04",
+                        topic: "【推論分析：應用與關聯】略讀與猜測生詞 (Skimming)",
+                        type: "mcq",
+                        questionText: "「這件事讓他氣得『七竅生煙』，大聲責罵別人。」猜測七竅生煙的意思？",
+                        options: ["非常高興", "生病了", "非常生氣", "正在煮飯"],
+                        correctAnswer: 2,
+                        hint: "從後面的「大聲責罵別人」可以猜測出他的情緒。",
+                        explanation: "結合上下文的「氣得」與「大聲責罵」，可推斷是形容極度憤怒。",
+                        audioScript: "猜測七竅生煙的意思是什麼？"
+                    }
                 ],
                 "level_3": [
-                    { id: "q5_3_01", topic: "體裁辨析", type: "mcq", questionText: "詳細介紹了貓熊的生活習性和外觀，這是一篇什麼文章？", options: ["記敘文", "說明文", "議論文", "描寫文"], correctAnswer: 1, hint: "客觀地解說事物的特徵。", explanation: "以解說事物特徵為主的文章是說明文。", audioScript: "這是一篇什麼文章？" },
-                    { id: "q5_3_02", topic: "寫作手法辨析", type: "mcq", questionText: "作者隨著自己的腳步，依序描寫沿途風景。這是什麼描寫手法？", options: ["靜態描寫", "步移法", "多感官描寫", "首尾呼應"], correctAnswer: 1, hint: "腳步移動，景物跟著改變。", explanation: "跟隨觀察者位置移動來描寫景物，稱為步移法。", audioScript: "這是什麼描寫手法？" }
+                    {
+                        id: "q5_3_01",
+                        topic: "【批判評價：評鑒與創造】體裁辨析",
+                        type: "mcq",
+                        questionText: "一篇文章詳細介紹了「貓熊」的生活習性、食物和外觀特徵，這是什麼體裁？",
+                        options: ["記敘文", "說明文", "議論文", "抒情文"],
+                        correctAnswer: 1,
+                        hint: "文章的目的是客觀地「介紹」或「解說」一種事物。",
+                        explanation: "以客觀說明事物特徵、解說知識為主的文章是說明文。",
+                        audioScript: "這是一篇什麼體裁的文章？"
+                    },
+                    {
+                        id: "q5_3_02",
+                        topic: "【批判評價：評鑒與創造】寫作與描寫手法辨析",
+                        type: "mcq",
+                        questionText: "作者從山腳一路寫到山頂，隨著位置改變描寫不同的風景。這是什麼手法？",
+                        options: ["靜態描寫", "步移法", "多感官描寫", "首尾呼應"],
+                        correctAnswer: 1,
+                        hint: "作者的「腳步」正在「移動」。",
+                        explanation: "觀察點隨著腳步移動而改變的描寫方式，稱為「步移法」。",
+                        audioScript: "這是什麼描寫手法？"
+                    },
+                    {
+                        id: "q5_3_03",
+                        topic: "【批判評價：評鑒與創造】作者立場與深層寓意推斷",
+                        type: "mcq",
+                        questionText: "作者在結尾寫道：「那些被丟棄的塑膠瓶，正無聲地哭泣。」作者的立場是？",
+                        options: ["支持使用塑膠瓶", "反對塑膠污染，呼籲環保", "覺得塑膠瓶很有用", "沒有特別看法"],
+                        correctAnswer: 1,
+                        hint: "用「無聲地哭泣」來形容，代表作者對這件事感到心痛。",
+                        explanation: "透過擬人手法表達對環境破壞的痛心，強烈暗示呼籲環保的立場。",
+                        audioScript: "作者的立場是什麼？"
+                    }
                 ]
             },
-
             // ================== 第 6 範疇：聆聽與說話 ==================
             "domain_6": {
                 "level_1": [
-                    { id: "q6_1_01", topic: "聽關鍵詞選圖", type: "mcq", questionText: "聽到「四條腿、長耳朵、會汪汪叫」，你想到什麼？", options: ["兔子", "小狗", "小貓", "青蛙"], correctAnswer: 1, hint: "汪汪叫是哪種動物的聲音？", explanation: "小狗的特徵符合這三個條件。", audioScript: "聽到四條腿長耳朵汪汪叫，你想到什麼？" },
-                    { id: "q6_1_02", topic: "簡單指令執行", type: "mcq", questionText: "老師說：「請把紅色書本放在桌子上。」你該怎麼做？", options: ["拿藍色書", "把紅書放地上", "把紅書放桌上", "打開紅書"], correctAnswer: 2, hint: "聽清楚顏色和位置。", explanation: "精準執行「紅書」與「桌上」兩個指令。", audioScript: "你該怎麼做？" }
+                    {
+                        id: "q6_1_01",
+                        topic: "【聽說基礎訓練】聽關鍵詞選圖",
+                        type: "mcq",
+                        questionText: "聽到這段話：「四條腿、長耳朵、會汪汪叫」，你想到哪種動物？",
+                        options: ["兔子", "小狗", "小貓", "青蛙"],
+                        correctAnswer: 1,
+                        hint: "哪種動物的叫聲是「汪汪」？",
+                        explanation: "「汪汪叫」是狗的特徵，結合四條腿和耳朵可確認是小狗。",
+                        audioScript: "聽到四條腿、長耳朵、會汪汪叫，你想到哪種動物？"
+                    },
+                    {
+                        id: "q6_1_02",
+                        topic: "【聽說基礎訓練】單一動作與物件描述",
+                        type: "mcq",
+                        questionText: "看到一個人拿著掃把在地上來回移動，他在做什麼？",
+                        options: ["煮飯", "掃地", "抹窗", "洗衣服"],
+                        correctAnswer: 1,
+                        hint: "拿著「掃把」對著「地上」。",
+                        explanation: "拿著掃把清理地面的動作就是掃地。",
+                        audioScript: "這個人在做什麼？"
+                    },
+                    {
+                        id: "q6_1_03",
+                        topic: "【聽說基礎訓練】簡單指令執行",
+                        type: "mcq",
+                        questionText: "老師說：「請把紅色的故事書放在桌子上。」你該怎麼做？",
+                        options: ["拿藍色書", "把紅書放地上", "把紅書放桌上", "打開紅書"],
+                        correctAnswer: 2,
+                        hint: "聽清楚「紅色」和「桌子上」兩個重點。",
+                        explanation: "必須精準執行顏色 (紅色) 和位置 (桌子上) 的指令。",
+                        audioScript: "老師說請把紅色故事書放在桌子上。你該怎麼做？"
+                    }
                 ],
                 "level_2": [
-                    { id: "q6_2_01", topic: "看圖順序說故事", type: "mcq", questionText: "三張圖：(1)開花 (2)種子 (3)小綠芽。正確的說故事順序是？", options: ["1-2-3", "2-3-1", "3-2-1", "2-1-3"], correctAnswer: 1, hint: "植物是怎麼長大的？", explanation: "先播種子，長出綠芽，最後開花。", audioScript: "正確的說故事順序是什麼？" },
-                    { id: "q6_2_02", topic: "語氣辨識", type: "mcq", questionText: "「哎呀！我怎麼又忘記帶鑰匙了！」這是什麼語氣？", options: ["開心", "懊惱", "生氣", "平靜"], correctAnswer: 1, hint: "忘記事情會覺得很後悔。", explanation: "表現出後悔、自責的懊惱語氣。", audioScript: "這是什麼語氣？" }
+                    {
+                        id: "q6_2_01",
+                        topic: "【信息處理與連貫表達】聽短文判斷是非",
+                        type: "mcq",
+                        questionText: "錄音說：「今天一直下大雨，小明沒有去踢足球。」判斷：小明今天去踢球了？",
+                        options: ["正確", "錯誤", "不知道", "可能是"],
+                        correctAnswer: 1,
+                        hint: "錄音說他「沒有」去。",
+                        explanation: "錄音明確指出因為下大雨所以「沒有去」，因此判斷為錯誤。",
+                        audioScript: "判斷小明今天去踢球了嗎？"
+                    },
+                    {
+                        id: "q6_2_02",
+                        topic: "【信息處理與連貫表達】看圖順序說故事",
+                        type: "mcq",
+                        questionText: "有三張圖：(1)小雞破殼而出 (2)母雞孵蛋 (3)小雞長大了。正確的故事順序是？",
+                        options: ["1-2-3", "2-1-3", "3-2-1", "2-3-1"],
+                        correctAnswer: 1,
+                        hint: "要先孵蛋，小雞才會出來。",
+                        explanation: "生命發展的時序：母雞孵蛋 -> 破殼而出 -> 小雞長大。",
+                        audioScript: "正確的說故事順序是什麼？"
+                    },
+                    {
+                        id: "q6_2_03",
+                        topic: "【信息處理與連貫表達】語氣辨識與個人感受",
+                        type: "mcq",
+                        questionText: "「哎呀！我怎麼又把功課忘在家裡了！」這句話帶有什麼語氣？",
+                        options: ["開心", "懊惱 (後悔)", "生氣", "平靜"],
+                        correctAnswer: 1,
+                        hint: "「哎呀」和「又忘記」表示做錯事後的反應。",
+                        explanation: "表現出自責、後悔的懊惱語氣。",
+                        audioScript: "這句話帶有什麼語氣？"
+                    }
                 ],
                 "level_3": [
-                    { id: "q6_3_01", topic: "弦外之音推斷", type: "mcq", questionText: "媽媽看著滿地玩具說：「你的房間真『整潔』啊！」她的真正意思是？", options: ["房間很乾淨", "房間很亂", "房間很大", "玩具很好玩"], correctAnswer: 1, hint: "這是一種說反話的表達方式。", explanation: "媽媽使用了反語，真正意思是房間非常雜亂。", audioScript: "媽媽真正的意思是什麼？" },
-                    { id: "q6_3_02", topic: "小組討論技巧 (協商)", type: "mcq", questionText: "如果不同意同學的意見，最好的回應方式是？", options: ["大聲反駁他", "先肯定對方，再提出看法", "不說話", "嘲笑他的想法"], correctAnswer: 1, hint: "要保持禮貌，讓討論順利進行。", explanation: "良好的協商應該建立在尊重和理性溝通上。", audioScript: "不同意同學的意見，最好的回應方式是？" }
+                    {
+                        id: "q6_3_01",
+                        topic: "【深層溝通與協商交際】聆聽觀點歸納與弦外之音",
+                        type: "mcq",
+                        questionText: "媽媽看著滿地玩具說：「你的房間真『整潔』啊！」她的真正意思是？",
+                        options: ["房間很乾淨", "房間很亂，需要收拾", "房間很大", "玩具很好玩"],
+                        correctAnswer: 1,
+                        hint: "滿地都是玩具怎麼會整潔呢？這是一種說反話的技巧。",
+                        explanation: "媽媽使用了反語 (說反話)，弦外之音是批評房間太亂，暗示要收拾。",
+                        audioScript: "媽媽真正的意思是什麼？"
+                    },
+                    {
+                        id: "q6_3_02",
+                        topic: "【深層溝通與協商交際】小組討論技巧 (協商/應對)",
+                        type: "mcq",
+                        questionText: "在討論中，如果你不同意同學的意見，最好的回應方式是？",
+                        options: ["大聲反駁他", "先肯定他的部分想法，再溫和提出不同看法", "不說話", "嘲笑他的想法"],
+                        correctAnswer: 1,
+                        hint: "要保持禮貌，讓討論能順利進行，不傷和氣。",
+                        explanation: "良好的協商應該建立在尊重和理性溝通的基礎上。",
+                        audioScript: "不同意同學的意見時，最好的回應方式是什麼？"
+                    },
+                    {
+                        id: "q6_3_03",
+                        topic: "【深層溝通與協商交際】情境勸說/角色扮演",
+                        type: "mcq",
+                        questionText: "你要勸告同學不要在走廊奔跑，哪句話最有效且有禮貌？",
+                        options: ["你再跑我就告訴老師！", "不要跑！煩死了！", "同學，走廊奔跑容易撞傷人，請慢慢走。", "你跑得真快。"],
+                        correctAnswer: 2,
+                        hint: "要有禮貌，並且說明「為什麼」不能跑的原因。",
+                        explanation: "說出後果（容易撞傷人）並提出有禮貌的要求（請慢慢走）是最具說服力的勸說。",
+                        audioScript: "哪句話勸說最有效且有禮貌？"
+                    }
                 ]
             },
-
-            // ================== 第 7 範疇：中華文化 ==================
+            // ================== 第 7 範疇：中華文化古詩 ==================
             "domain_7": {
                 "level_1": [
-                    { id: "q7_1_01", topic: "親屬稱謂配對", type: "mcq", questionText: "爸爸的哥哥，你應該叫他什麼？", options: ["叔叔", "伯父", "舅舅", "姑父"], correctAnswer: 1, hint: "比爸爸大的兄弟。", explanation: "爸爸的哥哥叫伯父，弟弟叫叔叔。", audioScript: "爸爸的哥哥叫什麼？" },
-                    { id: "q7_1_02", topic: "節日習俗配對", type: "mcq", questionText: "端午節的時候，人們通常會吃什麼傳統食物？", options: ["月餅", "湯圓", "粽子", "年糕"], correctAnswer: 2, hint: "用竹葉包起來，裡面有糯米的食物。", explanation: "端午節的傳統習俗是吃粽子、賽龍舟。", audioScript: "端午節會吃什麼傳統食物？" }
+                    {
+                        id: "q7_1_01",
+                        topic: "【傳統認知與啟蒙】親屬稱謂配對",
+                        type: "mcq",
+                        questionText: "爸爸的哥哥，你應該叫他什麼？",
+                        options: ["叔叔", "伯父", "舅舅", "姑丈"],
+                        correctAnswer: 1,
+                        hint: "比爸爸年紀大的兄弟。",
+                        explanation: "爸爸的哥哥叫伯父，爸爸的弟弟叫叔叔。",
+                        audioScript: "爸爸的哥哥，你應該叫他什麼？"
+                    },
+                    {
+                        id: "q7_1_02",
+                        topic: "【傳統認知與啟蒙】節日習俗配對",
+                        type: "mcq",
+                        questionText: "農曆八月十五日，人們通常會賞月和吃月餅。這是什麼節日？",
+                        options: ["中秋節", "端午節", "春節", "清明節"],
+                        correctAnswer: 0,
+                        hint: "有圓圓的月亮和好吃的月餅。",
+                        explanation: "農曆八月十五是中秋節，有賞月和吃月餅的傳統習俗。",
+                        audioScript: "這是什麼節日？"
+                    },
+                    {
+                        id: "q7_1_03",
+                        topic: "【傳統認知與啟蒙】基礎古詩填充與背誦",
+                        type: "mcq",
+                        questionText: "「春眠不覺曉，處處聞<span class='highlight-word'>____</span>鳥。」應填入哪個字？",
+                        options: ["飛", "啼", "鳴", "看"],
+                        correctAnswer: 1,
+                        hint: "聽到鳥兒叫聲的意思。",
+                        explanation: "出自孟浩然的《春曉》，原句為「處處聞啼鳥」。",
+                        audioScript: "應填入哪個字？"
+                    },
+                    {
+                        id: "q7_1_04",
+                        topic: "【傳統認知與啟蒙】神話/傳說人物認讀",
+                        type: "mcq",
+                        questionText: "傳說中，是誰用泥土捏出了人類，創造了我們？",
+                        options: ["嫦娥", "女媧", "盤古", "后羿"],
+                        correctAnswer: 1,
+                        hint: "一位偉大的女神，她還曾經「補天」。",
+                        explanation: "中國神話傳說中，是女媧用黃土捏造了人類。",
+                        audioScript: "傳說中是誰捏出了人類？"
+                    }
                 ],
                 "level_2": [
-                    { id: "q7_2_01", topic: "二十四節氣與生活", type: "mcq", questionText: "哪一個節氣代表春天開始，萬物復甦？", options: ["立夏", "秋分", "立春", "冬至"], correctAnswer: 2, hint: "「立」有開始的意思。", explanation: "立春是二十四節氣之首，代表春季的開始。", audioScript: "哪一個節氣代表春天開始？" },
-                    { id: "q7_2_02", topic: "傳統美德配對", type: "mcq", questionText: "「曾子殺豬」的故事，主要教導我們什麼傳統美德？", options: ["勇敢", "誠信", "節儉", "謙虛"], correctAnswer: 1, hint: "曾子的妻子騙小孩，曾子為了遵守承諾真的殺了豬。", explanation: "這故事教導父母要對孩子言而有信，展現誠信。", audioScript: "曾子殺豬教導我們什麼美德？" }
+                    {
+                        id: "q7_2_01",
+                        topic: "【文化底蘊與品德情意】詩意理解與畫面聯想",
+                        type: "mcq",
+                        questionText: "「床前明月光，疑是地上霜。」這句詩主要表達了作者什麼樣的情感？",
+                        options: ["開心", "思念故鄉", "生氣憤怒", "覺得很冷"],
+                        correctAnswer: 1,
+                        hint: "李白看著月亮，想起了遠方的家。",
+                        explanation: "出自《靜夜思》，作者藉由望月表達了對故鄉的濃烈思念。",
+                        audioScript: "這句詩表達了什麼情感？"
+                    },
+                    {
+                        id: "q7_2_02",
+                        topic: "【文化底蘊與品德情意】二十四節氣與生活關聯",
+                        type: "mcq",
+                        questionText: "二十四節氣中，哪一個節氣代表春天到來，萬物開始復甦？",
+                        options: ["立夏", "秋分", "立春", "冬至"],
+                        correctAnswer: 2,
+                        hint: "「立」有開始的意思。",
+                        explanation: "立春是二十四節氣的第一個，代表春季的開始。",
+                        audioScript: "哪一個節氣代表春天到來？"
+                    },
+                    {
+                        id: "q7_2_03",
+                        topic: "【文化底蘊與品德情意】歷史人物與傳統美德配對",
+                        type: "mcq",
+                        questionText: "「孔融殺豬」的故事，主要教導父母對孩子要展現哪一種傳統美德？",
+                        options: ["勇敢", "誠信 (言而有信)", "節儉", "謙虛"],
+                        correctAnswer: 1,
+                        hint: "答應過孩子的事情，就算是一頭豬也要做到。",
+                        explanation: "這故事教導做人要誠實守信，答應的事就要做到。",
+                        audioScript: "這個故事教導我們什麼傳統美德？"
+                    }
                 ],
                 "level_3": [
-                    { id: "q7_3_01", topic: "古典名著常識", type: "mcq", questionText: "《西遊記》中，會七十二變、拿著金箍棒的角色是？", options: ["豬八戒", "唐三藏", "沙悟淨", "孫悟空"], correctAnswer: 3, hint: "他是從石頭裡蹦出來的猴子。", explanation: "孫悟空是《西遊記》中最具代表性的核心人物。", audioScript: "會七十二變的角色是誰？" },
-                    { id: "q7_3_02", topic: "初級文言斷句與翻譯", type: "mcq", questionText: "「學而時習之」下一句是什麼？", options: ["不亦樂乎", "不亦說乎", "溫故而知新", "必有我師焉"], correctAnswer: 1, hint: "論語中的名句，表示學習後時常複習很快樂。", explanation: "原文為「學而時習之，不亦說乎」。", audioScript: "學而時習之下一句是什麼？" }
+                    {
+                        id: "q7_3_01",
+                        topic: "【文言進階與名著探究】初級文言斷句與翻譯",
+                        type: "mcq",
+                        questionText: "「學而時習之」的下一句是什麼？",
+                        options: ["不亦樂乎", "不亦說乎", "溫故而知新", "必有我師焉"],
+                        correctAnswer: 1,
+                        hint: "表示學習並時常複習，是一件很快樂 (悅) 的事。",
+                        explanation: "出自《論語》，原文為「學而時習之，不亦說乎」(「說」同「悅」)。",
+                        audioScript: "學而時習之的下一句是什麼？"
+                    },
+                    {
+                        id: "q7_3_02",
+                        topic: "【文言進階與名著探究】古典名著常識",
+                        type: "mcq",
+                        questionText: "古典名著《西遊記》中，會七十二變、手持金箍棒的角色是？",
+                        options: ["豬八戒", "唐三藏", "沙悟淨", "孫悟空"],
+                        correctAnswer: 3,
+                        hint: "他是從石頭裡蹦出來的神奇猴子。",
+                        explanation: "孫悟空是《西遊記》中的核心靈魂人物，神通廣大。",
+                        audioScript: "會七十二變的角色是誰？"
+                    },
+                    {
+                        id: "q7_3_03",
+                        topic: "【文言進階與名著探究】傳統文化價值觀批判與現代應用",
+                        type: "mcq",
+                        questionText: "古語云「三人行，必有我師焉」。這句話在現代生活中的應用態度是？",
+                        options: ["出門一定要找三個人", "隨時保持謙虛，向身邊的人學習優點", "每個人都能當老師賺錢", "不用去學校上課了"],
+                        correctAnswer: 1,
+                        hint: "指的是身邊總有值得我們學習的對象。",
+                        explanation: "這句話教導我們在現代社會也應保持謙虛好學的態度。",
+                        audioScript: "這句話在現代生活中的應用態度是什麼？"
+                    }
                 ]
             },
-
             // ================== 第 8 範疇：綜合寫作 ==================
             "domain_8": {
                 "level_1": [
-                    { id: "q8_1_01", topic: "看圖造句", type: "mcq", questionText: "圖片中有個男孩在跑步。哪個句子最適合用來造句？", options: ["他在睡覺", "男孩在操場上開心地跑步。", "蘋果在桌上", "他不喜歡跑步"], correctAnswer: 1, hint: "要描述人物、地點和動作。", explanation: "這句話準確地描述了動作、地點與心情。", audioScript: "哪個句子最適合用來造句？" },
-                    { id: "q8_1_02", topic: "五感詞彙填充", type: "mcq", questionText: "「微風吹過，帶來陣陣花香。」這是運用了哪一種感官的描寫？", options: ["視覺", "聽覺", "嗅覺", "觸覺"], correctAnswer: 2, hint: "「香」是靠哪個器官感受到的？", explanation: "聞到香味，屬於嗅覺描寫。", audioScript: "這是運用了哪一種感官的描寫？" }
+                    {
+                        id: "q8_1_01",
+                        topic: "【基礎建構與詞彙喚醒】看圖造句",
+                        type: "mcq",
+                        questionText: "如果圖片是一個男孩在操場跑得滿頭大汗。哪個句子最適合用來造句？",
+                        options: ["他在睡覺", "男孩在操場上努力地跑步。", "蘋果在桌上", "他不喜歡跑步"],
+                        correctAnswer: 1,
+                        hint: "句子必須包含人物、地點和動作。",
+                        explanation: "這句話最準確地描述了圖片中的動作與地點。",
+                        audioScript: "哪個句子最適合用來造句？"
+                    },
+                    {
+                        id: "q8_1_02",
+                        topic: "【基礎建構與詞彙喚醒】五感詞彙填充",
+                        type: "mcq",
+                        questionText: "「微風吹過，花園裡傳來陣陣<span class='highlight-word'>____</span>。」應填入哪個代表『嗅覺』的詞彙？",
+                        options: ["五顏六色", "鳥叫聲", "清香", "冰涼"],
+                        correctAnswer: 2,
+                        hint: "鼻子聞到的氣味。",
+                        explanation: "「清香」是嗅覺的形容詞，最符合花園的情境。",
+                        audioScript: "應填入哪個代表嗅覺的詞彙？"
+                    },
+                    {
+                        id: "q8_1_03",
+                        topic: "【基礎建構與詞彙喚醒】擴句成段框架練習",
+                        type: "mcq",
+                        questionText: "將「我去了公園」擴寫成一段話，最豐富的是？",
+                        options: ["我去了公園。公園很大。", "星期天早上，我和家人去美麗的公園野餐。", "我不喜歡去公園。", "公園有樹。"],
+                        correctAnswer: 1,
+                        hint: "加入了時間、人物和具體活動。",
+                        explanation: "加入了「時間、人物、地點形容詞、事件」，讓句子內容豐富飽滿。",
+                        audioScript: "哪一個擴寫的句子最豐富？"
+                    }
                 ],
                 "level_2": [
-                    { id: "q8_2_01", topic: "腦圖/大綱編寫", type: "mcq", questionText: "寫一篇關於「我的學校」的文章，腦圖的最中心應該寫什麼？", options: ["操場", "我的學校", "校長", "上課"], correctAnswer: 1, hint: "中心主題就是文章的題目。", explanation: "腦圖中心必須是文章的總主題。", audioScript: "腦圖的最中心應該寫什麼？" },
-                    { id: "q8_2_02", topic: "文章結構訓練", type: "mcq", questionText: "先寫故事結局，再回憶發生經過，這是什麼結構？", options: ["順敘", "倒敘", "插敘", "散敘"], correctAnswer: 1, hint: "把結尾倒過來放到最前面。", explanation: "倒敘法能製造懸念，吸引讀者閱讀。", audioScript: "這是什麼結構？" }
+                    {
+                        id: "q8_2_01",
+                        topic: "【結構規劃與段落擴寫】腦圖/概念圖編寫寫作大綱",
+                        type: "mcq",
+                        questionText: "準備寫一篇「我的學校」的文章，腦圖的正中心圓圈應該寫上什麼？",
+                        options: ["操場很大", "我的學校", "校長的名字", "上課的時間"],
+                        correctAnswer: 1,
+                        hint: "中心圓圈代表這篇文章的「核心大主題」。",
+                        explanation: "腦圖的中心必須是文章的總主題，然後再延伸出各個段落的分支。",
+                        audioScript: "腦圖的正中心圓圈應該寫上什麼？"
+                    },
+                    {
+                        id: "q8_2_02",
+                        topic: "【結構規劃與段落擴寫】段落擴寫與修辭入文",
+                        type: "mcq",
+                        questionText: "想讓「花開了」這句話變得更有畫面感，可以加入哪種修辭改寫？",
+                        options: ["花長大了。", "花朵展露了美麗的笑顏。", "花很漂亮。", "有很多很多花。"],
+                        correctAnswer: 1,
+                        hint: "使用擬人法，讓花像人一樣有表情。",
+                        explanation: "加入了擬人手法，使句子更生動、更有文學美感。",
+                        audioScript: "想讓花開了變得更有畫面感，可以怎麼改寫？"
+                    },
+                    {
+                        id: "q8_2_03",
+                        topic: "【結構規劃與段落擴寫】文章結構訓練 (順敘/倒敘)",
+                        type: "mcq",
+                        questionText: "一篇文章先寫出大賽奪冠的結果，再回憶準備比賽的辛苦過程。這是什麼結構？",
+                        options: ["順敘", "倒敘", "插敘", "散敘"],
+                        correctAnswer: 1,
+                        hint: "把結局倒過來放到最前面。",
+                        explanation: "倒敘法能製造懸念，吸引讀者繼續閱讀了解經過。",
+                        audioScript: "這是什麼結構？"
+                    }
                 ],
                 "level_3": [
-                    { id: "q8_3_01", topic: "開頭結尾修飾", type: "mcq", questionText: "文章開頭寫「我愛大海」，結尾寫「大海太迷人了」，這叫什麼技巧？", options: ["開門見山", "首尾呼應", "承上啟下", "埋下伏筆"], correctAnswer: 1, hint: "頭尾都有提到相同的感受，互相照應。", explanation: "開頭與結尾情感一致，使文章結構更嚴謹，稱為首尾呼應。", audioScript: "這叫什麼寫作技巧？" },
-                    { id: "q8_3_02", topic: "視角轉換與創意寫作", type: "mcq", questionText: "以「一棵大樹的自述」為題寫作，應該使用第幾人稱？", options: ["第一人稱 (我)", "第二人稱 (你)", "第三人稱 (他)", "不用人稱"], correctAnswer: 0, hint: "既然是「自述」，代表大樹就是作者自己。", explanation: "自述文必須使用第一人稱「我」來拉近與讀者的距離。", audioScript: "應該使用第幾人稱？" }
+                    {
+                        id: "q8_3_01",
+                        topic: "【高階產出與精細修飾】複雜題型審題優化",
+                        type: "mcq",
+                        questionText: "題目是「記一次難忘的教訓」，寫作時最重要的是什麼？",
+                        options: ["寫很多天氣的變化", "寫出為什麼這件事會成為『教訓』以及學到了什麼", "只寫開心的事情", "寫很長很長的對話"],
+                        correctAnswer: 1,
+                        hint: "要緊扣題目中的「難忘」和「教訓」兩個關鍵字。",
+                        explanation: "審題的關鍵在於扣緊題眼，必須交代反思與成長。",
+                        audioScript: "寫這篇文章最重要的是什麼？"
+                    },
+                    {
+                        id: "q8_3_02",
+                        topic: "【高階產出與精細修飾】開頭結尾修飾 (首尾呼應)",
+                        type: "mcq",
+                        questionText: "文章開頭寫「我最愛大海」，結尾寫「大海的迷人讓我深深愛上它」，這叫什麼技巧？",
+                        options: ["開門見山", "首尾呼應", "承上啟下", "埋下伏筆"],
+                        correctAnswer: 1,
+                        hint: "頭和尾都有提到相同的感受，互相照應。",
+                        explanation: "開頭與結尾情感一致，互相呼應，能使文章結構更嚴謹完整。",
+                        audioScript: "這叫什麼寫作技巧？"
+                    },
+                    {
+                        id: "q8_3_03",
+                        topic: "【高階產出與精細修飾】視角轉換與創意寫作",
+                        type: "mcq",
+                        questionText: "如果要以「一棵校園老樹的自述」為題寫作，你應該使用第幾人稱來寫？",
+                        options: ["第一人稱 (我)", "第二人稱 (你)", "第三人稱 (他)", "不需要人稱"],
+                        correctAnswer: 0,
+                        hint: "既然是「自述」，代表大樹就是作者自己。",
+                        explanation: "自述文必須使用第一人稱「我」來代入角色，拉近與讀者的距離。",
+                        audioScript: "應該使用第幾人稱來寫？"
+                    }
                 ]
             }
         };
